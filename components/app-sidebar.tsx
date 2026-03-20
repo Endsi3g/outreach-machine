@@ -66,6 +66,11 @@ const data = {
       url: "/dashboard/analytics",
       icon: IconChartBar,
     },
+    {
+      title: "Équipe",
+      url: "/dashboard/team",
+      icon: IconUsers,
+    },
   ],
   navSecondary: [
     {

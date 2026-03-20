@@ -6,65 +6,81 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { IconCheck, IconLoader2 } from "@tabler/icons-react"
+import { Separator } from "@/components/ui/separator"
+import { IconCheck, IconLoader2, IconShieldLock, IconKey } from "@tabler/icons-react"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 
 export default function SettingsPage() {
   const { data: session } = useSession()
+  const userId = session?.user?.email || "anonymous"
   const [loading, setLoading] = React.useState(true)
   const [saving, setSaving] = React.useState(false)
+  const [savingKeys, setSavingKeys] = React.useState(false)
 
-  // Profile data
+  // Profile
   const [companyName, setCompanyName] = React.useState("")
   const [senderName, setSenderName] = React.useState("")
   const [senderEmail, setSenderEmail] = React.useState("")
 
-  // API settings
+  // API Keys (from user_settings table, encrypted)
   const [ollamaUrl, setOllamaUrl] = React.useState("http://localhost:11434")
   const [ollamaModel, setOllamaModel] = React.useState("llama3.1")
   const [resendKey, setResendKey] = React.useState("")
   const [apifyToken, setApifyToken] = React.useState("")
+  const [sentryDsn, setSentryDsn] = React.useState("")
+  const [hasResendKey, setHasResendKey] = React.useState(false)
+  const [hasApifyToken, setHasApifyToken] = React.useState(false)
 
+  // Load profile + settings
   React.useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("/api/profile")
-        if (res.ok) {
-          const data = await res.json()
-          if (data.profile) {
-            setCompanyName(data.profile.company_name || "")
-            setSenderName(data.profile.sender_name || "")
-            setSenderEmail(data.profile.sender_email || "")
+        const [profileRes, settingsRes] = await Promise.all([
+          fetch("/api/profile", { headers: { "x-user-id": userId } }),
+          fetch("/api/settings", { headers: { "x-user-id": userId } }),
+        ])
+
+        if (profileRes.ok) {
+          const { profile } = await profileRes.json()
+          if (profile) {
+            setCompanyName(profile.company_name || "")
+            setSenderName(profile.sender_name || "")
+            setSenderEmail(profile.sender_email || "")
+          }
+        }
+
+        if (settingsRes.ok) {
+          const { settings } = await settingsRes.json()
+          if (settings) {
+            setOllamaUrl(settings.ollama_url || "http://localhost:11434")
+            setOllamaModel(settings.ollama_model || "llama3.1")
+            setSentryDsn(settings.sentry_dsn || "")
+            setResendKey(settings.resend_api_key || "")
+            setApifyToken(settings.apify_token || "")
+            setHasResendKey(settings.has_resend_key || false)
+            setHasApifyToken(settings.has_apify_token || false)
           }
         }
       } catch (error) {
-        console.error("Failed to load profile", error)
+        console.error("Failed to load settings", error)
       } finally {
         setLoading(false)
       }
     }
-    fetchProfile()
-  }, [])
+    fetchData()
+  }, [userId])
 
   const handleSaveProfile = async () => {
     setSaving(true)
     try {
       const res = await fetch("/api/profile", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": session?.user?.email || "anonymous",
-        },
-        body: JSON.stringify({
-          companyName,
-          senderName,
-          senderEmail,
-        }),
+        headers: { "Content-Type": "application/json", "x-user-id": userId },
+        body: JSON.stringify({ companyName, senderName, senderEmail }),
       })
-
       if (!res.ok) throw new Error("Erreur de sauvegarde")
-      toast.success("Profil sauvegardé avec succès !")
+      toast.success("Profil sauvegardé !")
     } catch (error: any) {
       toast.error(error.message)
     } finally {
@@ -72,15 +88,27 @@ export default function SettingsPage() {
     }
   }
 
-  const handleSaveApiKeys = () => {
-    // In reality, API keys should be stored in env vars (.env.local) 
-    // or securely encrypted in the DB. 
-    // Since this is a local app showing Env Var integration, we just mock the success.
-    setSaving(true)
-    setTimeout(() => {
-      setSaving(false)
-      toast.success("Clés API sauvegardées (Simulation locale)")
-    }, 800)
+  const handleSaveKeys = async () => {
+    setSavingKeys(true)
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-user-id": userId },
+        body: JSON.stringify({
+          ollamaUrl,
+          ollamaModel,
+          resendApiKey: resendKey,
+          apifyToken,
+          sentryDsn,
+        }),
+      })
+      if (!res.ok) throw new Error("Erreur de sauvegarde des clés")
+      toast.success("Clés API sauvegardées et chiffrées !")
+    } catch (error: any) {
+      toast.error(error.message)
+    } finally {
+      setSavingKeys(false)
+    }
   }
 
   if (loading) {
@@ -93,17 +121,15 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6 lg:p-8">
-      <div className="flex items-center">
+      <div className="flex items-center gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">Paramètres</h1>
       </div>
 
       <div className="grid gap-6">
-        {/* Profile */}
+        {/* ---- Profile ---- */}
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <CardTitle>Profil d&apos;Expéditeur</CardTitle>
-            </div>
+            <CardTitle>Profil d&apos;Expéditeur</CardTitle>
             <CardDescription>
               Informations utilisées pour personnaliser et envoyer vos emails.
             </CardDescription>
@@ -112,28 +138,15 @@ export default function SettingsPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="companyName">Entreprise</Label>
-                <Input
-                  id="companyName"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
+                <Input id="companyName" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="senderName">Nom d&apos;expéditeur</Label>
-                <Input
-                  id="senderName"
-                  value={senderName}
-                  onChange={(e) => setSenderName(e.target.value)}
-                />
+                <Input id="senderName" value={senderName} onChange={(e) => setSenderName(e.target.value)} />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="senderEmail">Email d&apos;expédition</Label>
-                <Input
-                  id="senderEmail"
-                  type="email"
-                  value={senderEmail}
-                  onChange={(e) => setSenderEmail(e.target.value)}
-                />
+                <Input id="senderEmail" type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} />
               </div>
             </div>
             <Button onClick={handleSaveProfile} disabled={saving} className="w-full sm:w-auto mt-2">
@@ -143,76 +156,84 @@ export default function SettingsPage() {
           </div>
         </Card>
 
-        {/* Ollama */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <CardTitle>Ollama (IA locale)</CardTitle>
-              <Badge variant="outline" className="text-xs">Gratuit</Badge>
-            </div>
-            <CardDescription>
-              Connectez-vous à votre instance Ollama locale pour la génération d&apos;emails IA.
-            </CardDescription>
-          </CardHeader>
-          <div className="flex flex-col gap-4 px-6 pb-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="ollamaUrl">URL du serveur (défaut dans .env.local)</Label>
-                <Input
-                  id="ollamaUrl"
-                  value={ollamaUrl}
-                  onChange={(e) => setOllamaUrl(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="ollamaModel">Modèle</Label>
-                <Input
-                  id="ollamaModel"
-                  value={ollamaModel}
-                  onChange={(e) => setOllamaModel(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-        </Card>
+        <Separator />
 
-        {/* Resend & Apify */}
+        {/* ---- API Keys (encrypted) ---- */}
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <CardTitle>Intégrations API</CardTitle>
-              <Badge variant="outline" className="text-xs">Externe</Badge>
+              <CardTitle>Clés API &amp; Intégrations</CardTitle>
+              <Badge variant="outline" className="text-xs">
+                <IconShieldLock className="mr-1 size-3" />
+                Chiffré AES-256
+              </Badge>
             </div>
             <CardDescription>
-              Configurez vos clés pour l&apos;envoi d&apos;emails (Resend) et le scraping (Apify).
+              Vos clés sont chiffrées avant d&apos;être stockées. Elles ne sont jamais affichées en clair après la sauvegarde.
             </CardDescription>
           </CardHeader>
-          <div className="flex flex-col gap-4 px-6 pb-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="resendKey">Clé API Resend</Label>
-                <Input
-                  id="resendKey"
-                  type="password"
-                  placeholder="Définie dans .env.local"
-                  value={resendKey}
-                  onChange={(e) => setResendKey(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="apifyToken">Token API Apify</Label>
-                <Input
-                  id="apifyToken"
-                  type="password"
-                  placeholder="Définie dans .env.local"
-                  value={apifyToken}
-                  onChange={(e) => setApifyToken(e.target.value)}
-                />
+          <div className="flex flex-col gap-6 px-6 pb-6">
+            {/* Ollama */}
+            <div>
+              <h3 className="text-sm font-medium mb-3">Ollama (IA locale)</h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="ollamaUrl">URL du serveur</Label>
+                  <Input id="ollamaUrl" value={ollamaUrl} onChange={(e) => setOllamaUrl(e.target.value)} />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="ollamaModel">Modèle</Label>
+                  <Input id="ollamaModel" value={ollamaModel} onChange={(e) => setOllamaModel(e.target.value)} />
+                </div>
               </div>
             </div>
-            <Button variant="secondary" onClick={handleSaveApiKeys} disabled={saving} className="w-full sm:w-auto mt-2">
-              {saving ? <IconLoader2 className="mr-2 size-4 animate-spin" /> : <IconCheck className="mr-2 size-4" />}
-              Mettre à jour les clés API
+
+            <Separator />
+
+            {/* Resend */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="resendKey">Clé API Resend</Label>
+                {hasResendKey && <Badge variant="secondary" className="text-xs">Configurée</Badge>}
+              </div>
+              <Input
+                id="resendKey"
+                type="password"
+                placeholder={hasResendKey ? "••••••••••••" : "re_xxxxxxxxxxxx"}
+                value={resendKey}
+                onChange={(e) => setResendKey(e.target.value)}
+              />
+            </div>
+
+            {/* Apify */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="apifyToken">Token API Apify</Label>
+                {hasApifyToken && <Badge variant="secondary" className="text-xs">Configuré</Badge>}
+              </div>
+              <Input
+                id="apifyToken"
+                type="password"
+                placeholder={hasApifyToken ? "••••••••••••" : "apify_api_xxxxxxxxxxxx"}
+                value={apifyToken}
+                onChange={(e) => setApifyToken(e.target.value)}
+              />
+            </div>
+
+            {/* Sentry DSN */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="sentryDsn">Sentry DSN (optionnel)</Label>
+              <Input
+                id="sentryDsn"
+                placeholder="https://xxxx@o0.ingest.sentry.io/xxxx"
+                value={sentryDsn}
+                onChange={(e) => setSentryDsn(e.target.value)}
+              />
+            </div>
+
+            <Button onClick={handleSaveKeys} disabled={savingKeys} className="w-full sm:w-auto">
+              {savingKeys ? <IconLoader2 className="mr-2 size-4 animate-spin" /> : <IconKey className="mr-2 size-4" />}
+              Sauvegarder les clés API
             </Button>
           </div>
         </Card>
