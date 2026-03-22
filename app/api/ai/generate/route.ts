@@ -55,7 +55,7 @@ Génère uniquement le corps de l'email (pas d'objet).`
       maxSteps: 2, // Allow the model to call the tool and then generate the email
     })
 
-    return result.toDataStreamResponse()
+    return result.toTextStreamResponse()
   } catch (error) {
     console.error("AI generation error:", error)
     return NextResponse.json(
