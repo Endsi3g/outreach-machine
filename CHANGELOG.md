@@ -4,6 +4,13 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-03-22
+### Correctifs Majeurs
+- **Navigation Dashboard Réparée** : Les éléments de la barre latérale (Leads, Générer, Réviser, Campagnes, Analytiques, Équipe, Paramètres) sont désormais cliquables et naviguent correctement grâce à l'intégration de `next/link` avec `asChild` dans `nav-main.tsx`.
+- **Page "Mot de passe oublié"** : Création de `/forgot-password` avec un formulaire de réinitialisation fonctionnel.
+- **Page "Politique de confidentialité"** : Création de `/privacy` — le lien dans le formulaire d'inscription ne génère plus de 404.
+- Mise à niveau de `nav-secondary.tsx` vers `next/link` pour une navigation client-side optimale.
+
 ## [3.1.2] - 2026-03-22
 ### Correctifs d'interface et d'Expérience Utilisateur
 - **Correction des Redirections Auth** : Les utilisateurs qui s'inscrivent ou se connectent avec succès sont désormais automatiquement propulsés vers `/dashboard` plutôt que de rester sur la page d'accueil d'acquisition.
