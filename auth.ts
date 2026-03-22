@@ -11,6 +11,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "openid email profile https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/analytics.readonly",
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     Credentials({
       name: "credentials",
@@ -57,15 +65,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     newUser: "/register",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id
+      }
+      if (account) {
+        token.accessToken = account.access_token
       }
       return token
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string
+      }
+      if (token.accessToken) {
+        // @ts-ignore: NextAuth doesn't expose accessToken by default
+        session.accessToken = token.accessToken
       }
       return session
     },

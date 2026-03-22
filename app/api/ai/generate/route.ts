@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { streamText } from "ai"
 import { getOllamaModel } from "@/lib/ollama"
 import { rateLimit } from "@/lib/rate-limit"
+import { webScraperTool } from "@/lib/tools"
+import { KIMU_SYSTEM_PROMPT } from "@/lib/templates"
 
 export async function POST(request: NextRequest) {
   // Rate limiting
@@ -15,14 +17,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { leadName, leadCompany, leadPosition, campaignSubject, tone, language } =
+    const { leadName, leadCompany, leadPosition, leadWebsite, campaignSubject, tone, language } =
       await request.json()
 
-    const prompt = `Tu es un expert en emails de prospection B2B. Génère un email personnalisé et engageant.
+    const prompt = `Génère un email de prospection selon les instructions suivantes.
 
 Destinataire :
 - Nom : ${leadName || "le contact"}
 - Entreprise : ${leadCompany || "l'entreprise"}
+- Site Web : ${leadWebsite || "Non fourni"}
 - Poste : ${leadPosition || ""}
 
 Campagne :
@@ -44,7 +47,12 @@ Génère uniquement le corps de l'email (pas d'objet).`
 
     const result = streamText({
       model,
+      system: KIMU_SYSTEM_PROMPT,
       prompt,
+      tools: {
+        webScraperTool,
+      },
+      maxSteps: 2, // Allow the model to call the tool and then generate the email
     })
 
     return result.toDataStreamResponse()

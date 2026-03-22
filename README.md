@@ -1,68 +1,50 @@
-# Outreach Machine
+<div align="center">
+  <img src="public/globe.svg" alt="Logo" width="120" height="120" />
+  
+  # 🌍 Outreach Machine : L'Intelligence B2B à son Paroxysme
 
-Outreach Machine is a fully-automated, AI-powered B2B prospecting dashboard. It enables you to find leads, generate highly personalized emails using local AI models, send campaigns, and track analytics from a beautifully designed interface.
+  **L'Engine de Prospection Totalement Autonome et Hyper-Générateur de Revenus.** <br />
+  *Intégrant Kimu 2.5, Vercel Agents, et toute la puissance de la Suite Google.*
 
-## 🚀 Features
+  [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+  [![AI](https://img.shields.io/badge/Local_AI-Kimu_2.5-blue.svg?style=for-the-badge&logo=ollama)](https://ollama.com/)
+  [![Docker](https://img.shields.io/badge/Docker-Optimized-2496ED.svg?style=for-the-badge&logo=docker)](https://www.docker.com/)
+  [![Vercel](https://img.shields.io/badge/Vercel-Agents-000000.svg?style=for-the-badge&logo=vercel)](https://vercel.com/)
+  
+</div>
 
-- **Local AI Generation**: Uses `Ollama` and `llama3.1` (or local Anthropic proxies) to write highly personalized emails using the Vercel AI SDK. No token costs!
-- **Email Delivery**: Integrated with `Resend` for high-deliverability transactional campaigns and sending statistical reports.
-- **Lead Enrichment**: Integrated with `Apify` to scrape Google Search and LinkedIn to prospect and discover decision-makers.
-- **Modern Dashboard**: Built with Next.js 14 App Router, Tailwind CSS v4, and Shadcn/ui. Features a beautiful, responsive sidebar layout, dark-mode styling, and aesthetic data tables.
-- **Complete Auth**: Secured via NextAuth.js (Google OAuth & Credentials).
-- **Backend & DB**: Powered by `Supabase` (PostgreSQL) with full Row Level Security (RLS) policies.
-- **Zero Mock Data**: Fully connected. Leads, Campaigns, Emails, and Notifications are all saved and fetched directly from Supabase.
-- **Error Tracking**: Configured with `@sentry/nextjs` for enterprise-grade error reporting.
+---
 
-## 🛠 Prerequisites
+## ✨ Qu'est-ce que Outreach Machine ?
 
-1. **Node.js**: v18+ and `pnpm`
-2. **Ollama**: Download from [ollama.com](https://ollama.com) and run `ollama pull llama3.1` in your terminal.
-3. **Supabase**: A free project with `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
-4. **Resend**: A free API key for email sending.
-5. **Apify**: A free API token for web scraping.
+**Outreach Machine** n'est pas un simple CRM. C'est une machine de guerre conçue exclusivement pour l'acquisition client à très haute valeur ajoutée. 
 
-## 🏁 Quickstart
+Imaginez avoir un commercial d'élite, capable d'étudier vos prospects en profondeur, de croiser leurs données, et de leur rédiger des messages d'une précision chirurgicale, sans jamais s'arrêter. C'est exactement ce que propose cette plateforme.
 
-1. **Install Dependencies**
-   ```bash
-   pnpm install
-   ```
+### 🧠 Intégration de Kimu 2.5 (Qwen) & Agents Vercel
+Grâce à nos **Agents Vercel** ultra-rapides, le système navigue _réellement_ sur le site web de chaque prospect en coulisse. L'information est ensuite transmise à **Kimu 2.5** (un modèle LLM local ultra-performant), qui analyse ces données pour sculpter des courriels marketing absoluments uniques, basés sur **trois structures comportementales éprouvées**.
 
-2. **Configure Environment Variables**
-   Rename `.env.local.example` to `.env.local` (or create it) and fill in your keys:
-   ```env
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your-secure-secret
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   OLLAMA_BASE_URL=http://localhost:11434
-   RESEND_API_KEY=...
-   APIFY_API_TOKEN=...
-   ```
+### 📨 Google Suite & Token Efficiency
+L'application est profondément ancrée dans l'écosystème Google de votre entreprise. 
+- **Envoi & Lecture de Gmail** en toute fluidité via OAuth.
+- **Google Analytics** embarqué pour une compréhension absolue des retombées de vos campagnes.
+Le tout optimisé pour consommer un minimum de ressources algorithmiques ("Token Efficient").
 
-3. **Database Setup**
-   Run the SQL script located in `supabase/migration.sql` in your Supabase SQL Editor to create all required tables and RLS policies.
+### 🎨 Un design "London" Inimitable
+Adieu les interfaces monotones. Outreach Machine arbore une esthétique haut de gamme, caractérisée par des tons blancs cassés et des bruns riches, reflétant le prestige ("London Theme").
 
-4. **Start the App**
-   Use the provided development script (Windows PowerShell):
-   ```powershell
-   .\dev.ps1
-   ```
-   This script will verify your environment variables and start the Next.js development server.
+### 🐳 Déploiement Fulgurant
+Embarqué dans une image Docker isolée, Alpine Node, et construite en `standalone`, l'application garantit une vitesse de chargement instantanée, quelle que soit la plateforme d'hébergement. Utilisez le fichier `dev.ps1` pour une installation locale sans friction.
 
-## 🗂 Project Structure
+---
 
-- `/app`: Next.js App Router (Pages, Layouts, API Routes).
-- `/components`: Shadcn/ui React components and custom UI elements.
-- `/lib`: Instances of third-party clients (Supabase, Ollama, Resend, Apify, Zod env validation).
-- `/supabase`: SQL migration scripts.
-- `/hooks`: React hooks (like toaster notifications).
+## 🎯 Pourquoi choisir cette solution ?
 
-## 🛡️ Security
+- **Prospection à très forte conversion** : L'IA ne devine pas. Elle "*lit*" le site de votre prospect avant d'écrire.
+- **Réduction des coûts** : Totalement hébergée en local via Ollama et Docker, l'IA ne vous coûte littéralement **rien** en frais d'API (OpenAI / Anthropic).
+- **Interface Premium** : Conçue pour que votre équipe ait envie de l'utiliser au quotidien.
+- **Lancement magique** : Le script `dev.ps1` configure intelligemment votre environnement, télécharge Kimu 2.5, et lance le Dashboard en 1 clic.
 
-- **Middleware guard**: Protects `/dashboard` and `/onboarding` routes from unauthenticated users.
-- **Rate limiting**: An in-memory token bucket rate limiter protects all POST/DELETE API routes from abuse.
-- **Server Validation**: The `lib/env.ts` file uses Zod to validate all required keys at startup so the app fails gracefully if misconfigured.
+---
 
-## 📝 License
-Open Source (MIT)
+> _"Si votre compétition utilise des templates classiques, ils ne font déjà plus le poids."_
