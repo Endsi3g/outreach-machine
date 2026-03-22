@@ -4,6 +4,13 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2026-03-22
+### Dashboard Automation & Metrics
+- **Performance** : Suppression des redondances de polices dans `layout.tsx`, améliorant le LCP et le temps de réponse global.
+- **Notifications Temps Réel** : Connexion du `NotificationsPanel` à Supabase Realtime via `/api/notifications`. Les alertes s'affichent instantanément sans rafraîchissement.
+- **Analytiques Dashboard** : Création d'une page complète avec **Recharts** visualisant le volume d'envoi quotidien et la répartition des statuts (Ouvert, Erreur, etc.).
+- **Automatisation Outreach** : Le bouton "Lancer l'automatisation" effectue désormais de réels envois via l'API Resend et suit l'état (Badge `Envoyé`, `Erreur`, `Lu`).
+
 ## [3.3.1] - 2026-03-22
 ### Hotfix: AI SDK Build Error
 - **Correction de l'Erreur de Compilation** : Installation de `@ai-sdk/react` et mise à jour des imports dans `app/dashboard/generate/page.tsx` pour refléter les changements de structure du Vercel AI SDK v4+ (séparation du core et des hooks React).
