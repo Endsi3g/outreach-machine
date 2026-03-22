@@ -37,7 +37,7 @@ export default function RegisterPage() {
           setError("Erreur lors de la création du compte. Veuillez réessayer.")
         }
       } else {
-        router.push("/")
+        router.push("/dashboard")
         router.refresh()
       }
     } catch {

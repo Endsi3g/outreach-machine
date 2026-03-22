@@ -4,6 +4,12 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.2] - 2026-03-22
+### Correctifs d'interface et d'Expérience Utilisateur
+- **Correction des Redirections Auth** : Les utilisateurs qui s'inscrivent ou se connectent avec succès sont désormais automatiquement propulsés vers `/dashboard` plutôt que de rester sur la page d'accueil d'acquisition.
+- **Réglage Précis du Hero** : Le sous-titre de la section Hero a été cassé sur 3 lignes pour strictement correspondre aux indications visuelles de la maquette originale London.
+- Maintien du patch de secours sur `NEXTAUTH_SECRET` pour le developpement et correction du composant `FooterSection` (`Import Link`).
+
 ## [3.1.0] - 2026-03-22
 ### Ajouts et Propriétés Étendues
 - **Kimi K2-5 Cloud support** : Configuration de `OLLAMA_MODEL` vers `kimi:k2-5` par défaut.
