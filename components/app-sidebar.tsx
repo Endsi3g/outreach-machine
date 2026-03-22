@@ -52,9 +52,14 @@ const data = {
       icon: IconSparkles,
     },
     {
+      title: "Outline",
+      url: "/dashboard/outline",
+      icon: IconFileText,
+    },
+    {
       title: "Réviser",
       url: "/dashboard/review",
-      icon: IconChecklist,
+      icon: IconClipboardList,
     },
     {
       title: "Campagnes",

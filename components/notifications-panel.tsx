@@ -51,34 +51,53 @@ export function NotificationsPanel() {
   }, [session?.user?.id])
 
   React.useEffect(() => {
-    if (session?.user?.id) {
-      fetchNotifications()
+    if (!session?.user?.id) return
 
-      // Real-time subscription
-      const channel = supabase
-        .channel(`user-notifications-${session.user.id}`)
-        .on(
-          "postgres_changes",
-          {
-            event: "INSERT",
-            schema: "public",
-            table: "notifications",
-            filter: `user_id=eq.${session.user.id}`,
-          },
-          (payload) => {
-            const newNotif = payload.new as Notification
-            setNotifications((prev) => [newNotif, ...prev])
-            toast(newNotif.title, {
-              description: newNotif.message,
-              icon: newNotif.type === "warning" ? <IconAlertTriangle className="size-4 text-warning" /> : <IconInfoCircle className="size-4 text-info" />,
-            })
-          }
-        )
-        .subscribe()
+    // Debug: Check Supabase config
+    const isSupabaseConfigured = 
+      process.env.NEXT_PUBLIC_SUPABASE_URL && 
+      !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-project")
 
-      return () => {
-        supabase.removeChannel(channel)
-      }
+    if (!isSupabaseConfigured) {
+      console.warn("⚠️ [Notifications] Supabase n'est pas configuré. Le temps réel est désactivé.")
+      setLoading(false)
+      return
+    }
+
+    fetchNotifications()
+
+    console.log(`🔌 [Notifications] Connexion au channel pour l'utilisateur ${session.user.id}...`)
+    
+    const channel = supabase
+      .channel(`user-notifications-${session.user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "notifications",
+          filter: `user_id=eq.${session.user.id}`,
+        },
+        (payload) => {
+          console.log("🔔 [Notifications] Nouveau message reçu !", payload)
+          const newNotif = payload.new as Notification
+          setNotifications((prev) => [newNotif, ...prev])
+          toast(newNotif.title, {
+            description: newNotif.message,
+            icon: newNotif.type === "warning" ? <IconAlertTriangle className="size-4 text-warning" /> : <IconInfoCircle className="size-4 text-info" />,
+          })
+        }
+      )
+      .subscribe((status) => {
+        console.log(`📡 [Notifications] Statut du channel : ${status}`)
+        if (status === "CHANNEL_ERROR") {
+          console.error("❌ [Notifications] Erreur de connexion au channel. Vérifiez les politiques RLS.")
+        }
+      })
+
+    return () => {
+      console.log("🔌 [Notifications] Déconnexion du channel.")
+      supabase.removeChannel(channel)
     }
   }, [session?.user?.id, fetchNotifications])
 

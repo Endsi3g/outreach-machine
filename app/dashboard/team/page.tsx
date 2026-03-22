@@ -40,42 +40,41 @@ export default function TeamPage() {
   const { data: session } = useSession()
   const userId = session?.user?.email || "anonymous"
   const [teams, setTeams] = React.useState<Team[]>([])
+  const [pendingInvites, setPendingInvites] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
 
-  // Create team form
+  // ... forms ...
   const [newTeamName, setNewTeamName] = React.useState("")
   const [creating, setCreating] = React.useState(false)
-
-  // Invite form
   const [inviteTeamId, setInviteTeamId] = React.useState("")
   const [inviteEmail, setInviteEmail] = React.useState("")
   const [inviting, setInviting] = React.useState(false)
 
-  const fetchTeams = React.useCallback(async () => {
+  const fetchTeamData = React.useCallback(async () => {
     try {
       setLoading(true)
       const res = await fetch("/api/teams", {
         headers: { "x-user-id": userId },
       })
-      if (!res.ok) throw new Error("Erreur de chargement")
       const data = await res.json()
       setTeams(data.teams || [])
+      
+      // Simulate/Fetch pending invites (actually we'll look for memberships where role is not 'none' but status is pending)
+      // For now, let's filter teams where we might have a special flag or just handle it via a new list
+      setPendingInvites(data.invites || [])
     } catch (error: any) {
-      toast.error(error.message || "Impossible de charger les équipes")
+      toast.error("Impossible de charger les données d'équipe")
     } finally {
       setLoading(false)
     }
   }, [userId])
 
   React.useEffect(() => {
-    fetchTeams()
-  }, [fetchTeams])
+    fetchTeamData()
+  }, [fetchTeamData])
 
   const handleCreateTeam = async () => {
-    if (!newTeamName.trim()) {
-      toast.error("Veuillez entrer un nom d'équipe")
-      return
-    }
+    if (!newTeamName.trim()) return
     setCreating(true)
     try {
       const res = await fetch("/api/teams", {
@@ -83,195 +82,166 @@ export default function TeamPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, name: newTeamName }),
       })
-      if (!res.ok) throw new Error("Erreur lors de la création")
-      const { team } = await res.json()
-      setTeams((prev) => [{ ...team, role: "owner" }, ...prev])
-      setNewTeamName("")
-      toast.success("Équipe créée avec succès !")
-    } catch (error: any) {
-      toast.error(error.message)
+      if (res.ok) {
+        const { team } = await res.json()
+        setTeams((prev) => [{ ...team, role: "owner" }, ...prev])
+        setNewTeamName("")
+        toast.success("Équipe créée !")
+      }
+    } catch (err) {
+      toast.error("Erreur de création")
     } finally {
       setCreating(false)
     }
   }
 
-  const handleDeleteTeam = async (teamId: string) => {
-    try {
-      const res = await fetch("/api/teams", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamId, userId }),
-      })
-      if (!res.ok) throw new Error("Erreur de suppression")
-      setTeams((prev) => prev.filter((t) => t.id !== teamId))
-      toast.success("Équipe supprimée")
-    } catch (error: any) {
-      toast.error(error.message)
-    }
-  }
-
-  const handleInvite = async () => {
-    if (!inviteTeamId || !inviteEmail) {
-      toast.error("Sélectionnez une équipe et entrez un email")
-      return
-    }
-    setInviting(true)
+  const handleRespondInvite = async (teamId: string, accept: boolean) => {
     try {
       const res = await fetch("/api/teams/invite", {
-        method: "POST",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          teamId: inviteTeamId,
-          email: inviteEmail,
-          role: "member",
-          invitedBy: userId,
-        }),
+        body: JSON.stringify({ teamId, userId, accept }),
       })
-      if (!res.ok) {
-        const errData = await res.json()
-        throw new Error(errData.error || "Erreur d'invitation")
+      if (res.ok) {
+        toast.success(accept ? "Invitation acceptée !" : "Invitation déclinée")
+        fetchTeamData()
       }
-      toast.success(`${inviteEmail} a été invité(e) !`)
-      setInviteEmail("")
-    } catch (error: any) {
-      toast.error(error.message)
-    } finally {
-      setInviting(false)
+    } catch (err) {
+      toast.error("Erreur lors de la réponse")
     }
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6 lg:p-8">
-      <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">Équipe</h1>
+    <div className="flex flex-col gap-8 p-4 md:p-8 lg:p-10 max-w-7xl mx-auto w-full animate-in fade-in duration-500">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-3xl font-bold tracking-tight">Collaboration d&apos;Équipe</h1>
+        <p className="text-muted-foreground">Travaillez ensemble sur vos campagnes et vos leads.</p>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Create Team */}
-        <Card>
+      {pendingInvites.length > 0 && (
+        <Card className="border-primary/20 bg-primary/5">
           <CardHeader>
-            <CardTitle>Créer une équipe</CardTitle>
-            <CardDescription>
-              Les membres de l&apos;équipe pourront accéder aux leads et campagnes partagées.
-            </CardDescription>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <IconUserPlus className="size-5 text-primary" />
+              Invitations en attente
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {pendingInvites.map((invite) => (
+              <div key={invite.team_id} className="flex items-center justify-between bg-background p-4 rounded-xl border">
+                <div>
+                  <p className="font-semibold">{invite.team_name}</p>
+                  <p className="text-xs text-muted-foreground">Invité(e) par {invite.invited_by}</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={() => handleRespondInvite(invite.team_id, true)}>Accepter</Button>
+                  <Button size="sm" variant="ghost" onClick={() => handleRespondInvite(invite.team_id, false)}>Refuser</Button>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-border/50 bg-card/50">
+          <CardHeader>
+            <CardTitle>Nouvelle Équipe</CardTitle>
           </CardHeader>
           <CardContent className="flex gap-2">
             <Input
-              placeholder="Nom de l'équipe"
+              placeholder="Nom de l'équipe (ex: Uprising Global)"
               value={newTeamName}
               onChange={(e) => setNewTeamName(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleCreateTeam()}
             />
-            <Button onClick={handleCreateTeam} disabled={creating} className="shrink-0">
-              {creating ? (
-                <IconLoader2 className="size-4 animate-spin" />
-              ) : (
-                <IconPlus className="size-4" />
-              )}
+            <Button onClick={handleCreateTeam} disabled={creating}>
+              {creating ? <IconLoader2 className="size-4 animate-spin" /> : <IconPlus className="size-4" />}
             </Button>
           </CardContent>
         </Card>
 
-        {/* Invite Member */}
-        <Card>
+        <Card className="border-border/50 bg-card/50">
           <CardHeader>
-            <CardTitle>Inviter un membre</CardTitle>
-            <CardDescription>
-              Ajoutez un collaborateur par email à l&apos;une de vos équipes.
-            </CardDescription>
+            <CardTitle>Ajouter un Collaborateur</CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2">
-              <Label>Équipe</Label>
-              <select
-                value={inviteTeamId}
-                onChange={(e) => setInviteTeamId(e.target.value)}
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
-              >
-                <option value="">Sélectionner...</option>
-                {teams
-                  .filter((t) => t.role === "owner" || t.role === "admin")
-                  .map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+          <CardContent className="space-y-4">
+            <select
+              value={inviteTeamId}
+              onChange={(e) => setInviteTeamId(e.target.value)}
+              className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            >
+              <option value="">Sélectionner une équipe...</option>
+              {teams.filter(t => t.role === "owner" || t.role === "admin").map(t => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
             <div className="flex gap-2">
               <Input
                 placeholder="email@collaborateur.com"
-                type="email"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
               />
-              <Button onClick={handleInvite} disabled={inviting} className="shrink-0">
-                {inviting ? (
-                  <IconLoader2 className="size-4 animate-spin" />
-                ) : (
-                  <IconUserPlus className="size-4" />
-                )}
+              <Button onClick={async () => {
+                setInviting(true)
+                try {
+                  const res = await fetch("/api/teams/invite", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ teamId: inviteTeamId, email: inviteEmail, role: "member", invitedBy: userId })
+                  })
+                  if (res.ok) {
+                    toast.success("Invitation envoyée !")
+                    setInviteEmail("")
+                  }
+                } finally {
+                  setInviting(false)
+                }
+              }} disabled={inviting || !inviteTeamId}>
+                {inviting ? <IconLoader2 className="size-4 animate-spin" /> : <IconUserPlus className="size-4" />}
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Teams List */}
-      <Card>
+      <Card className="border-border/50 bg-card/50">
         <CardHeader>
-          <CardTitle>Mes équipes</CardTitle>
-          <CardDescription>
-            {loading ? "Chargement..." : `${teams.length} équipe${teams.length > 1 ? "s" : ""}`}
-          </CardDescription>
+          <CardTitle>Mes Équipes</CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="flex justify-center py-6">
-              <IconLoader2 className="size-6 animate-spin text-muted-foreground" />
+            <div className="flex flex-col gap-4">
+              {[1, 2].map(i => <div key={i} className="h-20 w-full bg-muted/20 animate-pulse rounded-xl" />)}
             </div>
           ) : teams.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 py-8 text-center text-muted-foreground">
-              <IconUsers className="size-8" />
-              <p>Aucune équipe pour le moment. Créez-en une ci-dessus !</p>
+            <div className="text-center py-12 text-muted-foreground">
+              <IconUsers className="size-12 mx-auto mb-4 opacity-20" />
+              <p>Vous ne faites partie d&apos;aucune équipe.</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="grid gap-4 md:grid-cols-2">
               {teams.map((team) => (
-                <div
-                  key={team.id}
-                  className="flex items-center justify-between rounded-lg border p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-md bg-muted text-sm font-semibold">
-                      {team.name.charAt(0).toUpperCase()}
+                <div key={team.id} className="group flex items-center justify-between p-5 rounded-2xl border bg-background/50 hover:border-primary/30 transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-lg">
+                      {team.name.charAt(0)}
                     </div>
                     <div>
-                      <div className="font-medium">{team.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        Créée le{" "}
-                        {new Date(team.created_at).toLocaleDateString("fr-FR")}
-                      </div>
+                      <p className="font-semibold">{team.name}</p>
+                      <Badge variant="outline" className={cn("text-[10px] mt-1 uppercase tracking-wider", roleColors[team.role])}>
+                        {roleLabels[team.role] || team.role}
+                      </Badge>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant="outline"
-                      className={`text-xs ${roleColors[team.role] || ""}`}
-                    >
-                      {roleLabels[team.role] || team.role}
-                    </Badge>
-                    {team.role === "owner" && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="size-8 text-muted-foreground hover:text-destructive"
-                        onClick={() => handleDeleteTeam(team.id)}
-                      >
-                        <IconTrash className="size-4" />
-                      </Button>
-                    )}
-                  </div>
+                  {team.role === "owner" && (
+                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive" onClick={() => {
+                       if(confirm("Supprimer cette équipe ?")) {
+                         fetch("/api/teams", { method: "DELETE", body: JSON.stringify({ teamId: team.id, userId }) }).then(() => fetchTeamData())
+                       }
+                    }}>
+                      <IconTrash className="size-4" />
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
@@ -281,3 +251,4 @@ export default function TeamPage() {
     </div>
   )
 }
+

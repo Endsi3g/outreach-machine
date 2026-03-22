@@ -73,7 +73,23 @@ export default function AnalyticsPage() {
   }, [data])
 
   if (loading) {
-    return <div className="p-8 animate-pulse text-muted-foreground">Chargement des données...</div>
+    return (
+      <div className="flex flex-col gap-6 p-4 md:p-8 lg:p-10 max-w-7xl mx-auto w-full animate-pulse">
+        <div className="flex flex-col gap-2">
+          <div className="h-10 w-48 bg-muted rounded-lg" />
+          <div className="h-4 w-64 bg-muted/60 rounded-lg" />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-32 w-full bg-card/50 border border-border/50 rounded-xl" />
+          ))}
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+          <div className="lg:col-span-4 h-[400px] bg-card/50 border border-border/50 rounded-xl" />
+          <div className="lg:col-span-3 h-[400px] bg-card/50 border border-border/50 rounded-xl" />
+        </div>
+      </div>
+    )
   }
 
   return (

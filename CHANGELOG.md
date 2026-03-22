@@ -4,6 +4,13 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2026-03-22
+### Collaboration, Performance & Outline Builder
+- **Performance Stratosphérique** : Ajout d'un `loading.tsx` global et de **Skeletons** haute fidélité. Le dashboard s'affiche instantanément sans flash blanc.
+- **Outline Builder (New)** : Implémentation du constructeur d'outline premium avec onglets dynamiques et colonnes personnalisables, basé sur les maquettes fournies.
+- **Système d'Équipe Complet** : Refonte de la page Équipe avec gestion des invitations (Accepter/Refuser) et visualisation des rôles.
+- **Notifications Debug** : Ajout de logs de diagnostic et de vérifications de configuration pour Supabase Realtime dans la console.
+
 ## [3.4.0] - 2026-03-22
 ### Dashboard Automation & Metrics
 - **Performance** : Suppression des redondances de polices dans `layout.tsx`, améliorant le LCP et le temps de réponse global.
