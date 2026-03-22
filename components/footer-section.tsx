@@ -62,21 +62,21 @@ export default function FooterSection() {
               Produit
             </div>
             <div className="flex flex-col justify-end items-start gap-2">
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Fonctionnalites
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              <Link href="/features" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Fonctionnalités
+              </Link>
+              <Link href="/pricing" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Tarifs
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Integrations
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              </Link>
+              <Link href="/integrations" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Intégrations
+              </Link>
+              <Link href="/import-csv" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Import CSV
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Generation IA
-              </div>
+              </Link>
+              <Link href="/ai-generation" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Génération IA
+              </Link>
             </div>
           </div>
 
@@ -84,21 +84,21 @@ export default function FooterSection() {
           <div className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
             <div className="text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">Entreprise</div>
             <div className="flex flex-col justify-center items-start gap-2">
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                A propos
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              <Link href="/about" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                À propos
+              </Link>
+              <Link href="/uprising-studio" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Uprising Studio
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Carrieres
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              </Link>
+              <Link href="/careers" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Carrières
+              </Link>
+              <Link href="/brand" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Marque
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              </Link>
+              <Link href="/contact" className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Contact
-              </div>
+              </Link>
             </div>
           </div>
 
@@ -106,21 +106,21 @@ export default function FooterSection() {
           <div className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
             <div className="text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">Ressources</div>
             <div className="flex flex-col justify-center items-center gap-2">
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              <Link href="/terms" className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Conditions d'utilisation
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Reference API
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              </Link>
+              <Link href="/api-reference" className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Référence API
+              </Link>
+              <Link href="/docs" className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Documentation
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Communaute
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+              </Link>
+              <Link href="/community" className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
+                Communauté
+              </Link>
+              <Link href="/support" className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
                 Support
-              </div>
+              </Link>
             </div>
           </div>
         </div>

@@ -138,10 +138,10 @@ export default function LandingPage() {
                   <div className="w-full max-w-[748.71px] lg:w-[748.71px] text-center flex justify-center flex-col text-[#37322F] text-[24px] xs:text-[28px] sm:text-[36px] md:text-[52px] lg:text-[80px] font-normal leading-[1.1] sm:leading-[1.15] md:leading-[1.2] lg:leading-24 font-serif px-2 sm:px-4 md:px-0">
                     Automatisez vos emails
                     <br />
-                    a froid avec l'IA
+                    à froid avec l'IA
                   </div>
                   <div className="w-full max-w-[506.08px] lg:w-[506.08px] text-center flex justify-center flex-col text-[rgba(55,50,47,0.80)] sm:text-lg md:text-xl leading-[1.4] sm:leading-[1.45] md:leading-[1.5] lg:leading-7 font-sans px-2 sm:px-4 md:px-0 lg:text-lg font-medium text-sm">
-                    Importez vos leads, generez des emails personnalises avec Claude,
+                    Importez vos leads, générez des emails personnalisés avec Claude,
                     <br className="hidden sm:block" />
                     validez et envoyez via Brevo. Par Uprising Studio.
                   </div>
@@ -246,8 +246,8 @@ export default function LandingPage() {
                     onClick={() => handleCardClick(0)}
                   />
                   <FeatureCard
-                    title="Emails IA personnalises"
-                    description="Claude AI genere des emails uniques et percutants pour chaque prospect."
+                    title="Emails IA personnalisés"
+                    description="Claude AI génère des emails uniques et percutants pour chaque prospect."
                     isActive={activeCard === 1}
                     progress={activeCard === 1 ? progress : 0}
                     onClick={() => handleCardClick(1)}
@@ -298,12 +298,12 @@ export default function LandingPage() {
                       text="Ils nous font confiance"
                     />
                     <div className="w-full max-w-[472.55px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-                      Des resultats qui parlent
+                      Des résultats qui parlent
                     </div>
                     <div className="self-stretch text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
-                      Nos utilisateurs multiplient leurs opportunites
+                      Nos utilisateurs multiplient leurs opportunités
                       <br className="hidden sm:block" />
-                      grace a des emails personnalises et percutants.
+                      grâce à des emails personnalisés et percutants.
                     </div>
                   </div>
                 </div>
@@ -389,10 +389,10 @@ export default function LandingPage() {
                           <rect x="7" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
                         </svg>
                       }
-                      text="Fonctionnalites"
+                      text="Fonctionnalités"
                     />
                     <div className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-                      Concu pour des campagnes efficaces et controlees
+                      Conçu pour des campagnes efficaces et contrôlées
                     </div>
                     <div className="self-stretch text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
                       Gardez le controle avec des outils qui organisent, connectent
@@ -441,10 +441,10 @@ export default function LandingPage() {
                     <div className="border-b border-[rgba(55,50,47,0.12)] p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6">
                       <div className="flex flex-col gap-2">
                         <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
-                          Generation IA Claude
+                          Génération IA Claude
                         </h3>
                         <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                          Chaque email est genere par Claude AI pour un message unique et personnalise a chaque prospect.
+                          Chaque email est généré par Claude AI pour un message unique et personnalisé à chaque prospect.
                         </p>
                       </div>
                       <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden text-right items-center justify-center">
@@ -461,7 +461,7 @@ export default function LandingPage() {
                     <div className="border-r-0 md:border-r border-[rgba(55,50,47,0.12)] p-4 sm:p-6 md:p-8 lg:p-12 flex flex-col justify-start items-start gap-4 sm:gap-6 bg-transparent">
                       <div className="flex flex-col gap-2">
                         <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                          Integration Brevo SMTP
+                          Intégration Brevo SMTP
                         </h3>
                         <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
                           Exportez ou envoyez directement via Brevo SMTP gratuit en quelques clics.

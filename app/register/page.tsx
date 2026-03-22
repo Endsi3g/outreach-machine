@@ -32,16 +32,16 @@ export default function RegisterPage() {
 
       if (result?.error) {
         if (result.error.includes("existe deja")) {
-          setError("Un compte existe deja avec cet email.")
+          setError("Un compte existe déjà avec cet email.")
         } else {
-          setError("Erreur lors de la creation du compte. Veuillez reessayer.")
+          setError("Erreur lors de la création du compte. Veuillez réessayer.")
         }
       } else {
         router.push("/")
         router.refresh()
       }
     } catch {
-      setError("Une erreur est survenue. Veuillez reessayer.")
+      setError("Une erreur est survenue. Veuillez réessayer.")
     } finally {
       setLoading(false)
     }
@@ -71,7 +71,7 @@ export default function RegisterPage() {
           <span className="text-[#37322F] text-base font-semibold leading-none">Outreach Machine</span>
         </Link>
         <div className="text-[rgba(55,50,47,0.60)] text-sm font-normal">
-          Deja un compte ?{" "}
+          Déjà un compte ?{" "}
           <Link href="/login" className="text-[#37322F] font-medium underline underline-offset-2 hover:opacity-70 transition-opacity">
             Se connecter
           </Link>
@@ -84,10 +84,10 @@ export default function RegisterPage() {
           {/* Heading */}
           <div className="flex flex-col gap-2">
             <h1 className="text-[#37322F] text-3xl font-semibold leading-tight tracking-tight font-sans">
-              Creer votre compte
+              Créer votre compte
             </h1>
             <p className="text-[rgba(55,50,47,0.60)] text-sm font-normal leading-5">
-              Lancez vos premieres campagnes email en quelques minutes.
+              Lancez vos premières campagnes email en quelques minutes.
             </p>
           </div>
 
@@ -175,7 +175,7 @@ export default function RegisterPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 8 caracteres"
+                placeholder="Min. 8 caractères"
                 required
                 minLength={8}
                 className="w-full h-10 px-3 py-2 bg-white border border-[rgba(55,50,47,0.16)] rounded-lg text-[#37322F] text-sm font-normal placeholder:text-[rgba(55,50,47,0.35)] focus:outline-none focus:ring-2 focus:ring-[#37322F]/20 focus:border-[#37322F]/40 transition-all"
@@ -235,7 +235,7 @@ export default function RegisterPage() {
             >
               <div className="absolute inset-0 bg-gradient-to-b from-[rgba(255,255,255,0.10)] to-[rgba(0,0,0,0.10)] mix-blend-multiply pointer-events-none" />
               <span className="text-white text-sm font-medium leading-5 relative z-10">
-                {loading ? "Creation..." : "Creer mon compte"}
+                {loading ? "Création..." : "Créer mon compte"}
               </span>
             </button>
           </form>
