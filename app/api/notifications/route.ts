@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { supabase, isSupabaseConfigured } from "@/lib/supabase"
 
 // GET /api/notifications — List notifications for current user
 export async function GET(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json(
+      { error: "Supabase n'est pas configuré. Veuillez ajouter les clés dans .env.local", notifications: [] },
+      { status: 200 } // Return 200 with empty list to avoid UI crash
+    )
+  }
   const userId = request.headers.get("x-user-id") || "anonymous"
 
   const { data, error } = await supabase
@@ -21,6 +27,12 @@ export async function GET(request: NextRequest) {
 
 // POST /api/notifications — Create a notification
 export async function POST(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json(
+      { error: "Supabase n'est pas configuré. Veuillez ajouter les clés dans .env.local", notifications: [] },
+      { status: 200 }
+    )
+  }
   try {
     const { userId, title, message, type } = await request.json()
 
@@ -46,6 +58,12 @@ export async function POST(request: NextRequest) {
 
 // PATCH /api/notifications — Mark notification(s) as read
 export async function PATCH(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json(
+      { error: "Supabase n'est pas configuré. Veuillez ajouter les clés dans .env.local", notifications: [] },
+      { status: 200 }
+    )
+  }
   try {
     const { ids } = await request.json()
 

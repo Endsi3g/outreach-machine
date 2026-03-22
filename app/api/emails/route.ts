@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { supabase, isSupabaseConfigured } from "@/lib/supabase"
 import { rateLimit } from "@/lib/rate-limit"
 
 // GET /api/emails — List generated emails for current user
 export async function GET(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ emails: [] }, { status: 200 })
+  }
   const userId = request.headers.get("x-user-id") || "anonymous"
 
   // Join with leads table to get the lead's name
@@ -25,6 +28,9 @@ export async function GET(request: NextRequest) {
 
 // POST /api/emails — Save a newly generated email
 export async function POST(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ emails: [] }, { status: 200 })
+  }
   const ip = request.headers.get("x-forwarded-for") || "anonymous"
   const { success } = rateLimit(ip, { maxTokens: 20, refillRate: 2 })
   if (!success) {
@@ -67,6 +73,9 @@ export async function POST(request: NextRequest) {
 
 // PATCH /api/emails — Update email status (approve/reject/sent)
 export async function PATCH(request: NextRequest) {
+  if (!isSupabaseConfigured) {
+    return NextResponse.json({ emails: [] }, { status: 200 })
+  }
   try {
     const { id, status } = await request.json()
 

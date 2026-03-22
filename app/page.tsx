@@ -70,7 +70,7 @@ export default function LandingPage() {
       case 0:
         return <div className="text-[#828387] text-sm">Import et gestion des leads CSV</div>
       case 1:
-        return <div className="text-[#828387] text-sm">Generation d'emails personnalises avec Claude AI</div>
+        return <div className="text-[#828387] text-sm">Generation d'emails personnalises avec Kimu 2.5</div>
       case 2:
         return <div className="text-[#828387] text-sm">Validation humaine et envoi via Brevo</div>
       default:
@@ -141,10 +141,7 @@ export default function LandingPage() {
                     à froid avec l’IA
                   </div>
                   <div className="w-full max-w-[506.08px] lg:w-[506.08px] text-center flex justify-center flex-col text-[rgba(55,50,47,0.80)] sm:text-lg md:text-xl leading-[1.4] sm:leading-[1.45] md:leading-[1.5] lg:leading-7 font-sans px-2 sm:px-4 md:px-0 lg:text-[18px] font-medium text-sm animate-fade-in-up-delay-1">
-                    Importez vos leads, générez des emails personnalisés
-                    <br />
-                    avec Claude,
-                    <br />
+                    génère des emails personnalisés avec Kimu 2.5,<br />
                     validez et envoyez via Brevo. Par Uprising Studio.
                   </div>
                 </div>
@@ -249,7 +246,7 @@ export default function LandingPage() {
                   />
                   <FeatureCard
                     title="Emails IA personnalisés"
-                    description="Claude AI génère des emails uniques et percutants pour chaque prospect."
+                    description="Kimu 2.5 génère des emails uniques et percutants pour chaque prospect."
                     isActive={activeCard === 1}
                     progress={activeCard === 1 ? progress : 0}
                     onClick={() => handleCardClick(1)}
@@ -446,7 +443,7 @@ export default function LandingPage() {
                           Génération IA Claude
                         </h3>
                         <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                          Chaque email est généré par Claude AI pour un message unique et personnalisé à chaque prospect.
+                          Chaque email est généré par Kimu 2.5 pour un message unique et personnalisé à chaque prospect.
                         </p>
                       </div>
                       <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden text-right items-center justify-center">

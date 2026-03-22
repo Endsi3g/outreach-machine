@@ -14,6 +14,6 @@ export const ollama = createOllama({
  * Get the configured Ollama model.
  */
 export function getOllamaModel() {
-  const modelName = process.env.OLLAMA_MODEL || "kimi-k2-5"
+  const modelName = process.env.OLLAMA_MODEL || "kimi:k2-5"
   return ollama(modelName)
 }

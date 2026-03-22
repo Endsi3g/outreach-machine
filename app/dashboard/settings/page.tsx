@@ -25,7 +25,7 @@ export default function SettingsPage() {
 
   // API Keys (from user_settings table, encrypted)
   const [ollamaUrl, setOllamaUrl] = React.useState("http://localhost:11434")
-  const [ollamaModel, setOllamaModel] = React.useState("llama3.1")
+  const [ollamaModel, setOllamaModel] = React.useState("kimi:k2-5")
   const [resendKey, setResendKey] = React.useState("")
   const [apifyToken, setApifyToken] = React.useState("")
   const [sentryDsn, setSentryDsn] = React.useState("")

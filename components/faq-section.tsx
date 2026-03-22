@@ -14,9 +14,9 @@ const faqData: FAQItem[] = [
       "Outreach Machine est un outil d'automatisation d'emails a froid construit pour Uprising Studio. Il est parfait pour les equipes commerciales, les agences et les startups qui souhaitent automatiser leur prospection tout en gardant un controle humain.",
   },
   {
-    question: "Comment fonctionne la generation d'emails avec Claude AI ?",
+    question: "Comment fonctionne la generation d'emails avec Kimu 2.5 ?",
     answer:
-      "Notre plateforme utilise l'API Claude d'Anthropic pour generer des emails ultra-personnalises a partir des informations de vos leads. Chaque email est unique et adapte au contexte du prospect.",
+      "Notre plateforme utilise Kimu 2.5, notre IA locale ultra-rapide, pour generer des emails ultra-personnalises a partir des informations de vos leads. Chaque email est unique et adapte au contexte du prospect.",
   },
   {
     question: "Puis-je integrer Outreach Machine avec mes outils existants ?",

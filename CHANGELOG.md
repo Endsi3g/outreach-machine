@@ -4,6 +4,12 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.1] - 2026-03-22
+### Build & Branding Consistency
+- **Docker Fix** : Transitioned to `node:20-bookworm-slim` and optimized `pnpm` configuration to resolve native binding issues with Tailwind CSS 4 (`oxide`).
+- **Branding Consistency** : Unified all AI references to **Kimu 2.5** (Ollama) across the landing page, FAQ, Hero, and Documentation sections, replacing outdated "Claude" mentions.
+- **Settings Defaults** : Updated default AI model to `kimi:k2-5` in the dashboard settings to match the project's local AI strategy.
+
 ## [3.5.0] - 2026-03-22
 ### Collaboration, Performance & Outline Builder
 - **Performance Stratosphérique** : Ajout d'un `loading.tsx` global et de **Skeletons** haute fidélité. Le dashboard s'affiche instantanément sans flash blanc.

@@ -26,8 +26,8 @@ export default function DocumentationSection() {
       image: "/modern-dashboard-interface-with-data-visualization.jpg",
     },
     {
-      title: "Generez avec l'IA Claude",
-      description: "Transformez vos leads en emails personnalises\ngracie a la puissance de Claude AI.",
+      title: "Generez avec Kimu 2.5",
+      description: "Transformez vos leads en emails personnalises\ngracie a la puissance de Kimu 2.5.",
       image: "/analytics-dashboard.png",
     },
     {

@@ -12,7 +12,7 @@ export function HeroSection() {
                 Automatisez vos emails a froid avec Outreach Machine
               </h1>
               <p className="max-w-[506px] text-center text-[#37322f]/80 text-lg font-medium leading-7">
-                Importez vos leads, generez des emails ultra-personnalises avec Claude AI, validez et envoyez via Brevo.
+                Importez vos leads, generez des emails ultra-personnalises avec Kimu 2.5, validez et envoyez via Brevo.
                 Construit pour Uprising Studio.
               </p>
             </div>

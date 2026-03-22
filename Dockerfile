@@ -1,25 +1,28 @@
 ## Stage 1: Dependencies
-FROM node:18-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20-bookworm-slim AS deps
+RUN apt-get update && apt-get install -y libc6 python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-# Install pnpm and dependencies
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Install pnpm and configure it for the target platform
+RUN npm install -g pnpm && \
+    pnpm config set supportedArchitectures.os ["linux"] && \
+    pnpm config set supportedArchitectures.cpu ["x64"] && \
+    pnpm install --no-frozen-lockfile
 
 ## Stage 2: Builder
-FROM node:18-alpine AS builder
+FROM node:20-bookworm-slim AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # We disable telemetry to improve build speed
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm install -g pnpm && pnpm run build
 
 ## Stage 3: Runner
-FROM node:18-alpine AS runner
+FROM node:20-bookworm-slim AS runner
 WORKDIR /app
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -31,7 +34,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000
 
 # Start the server
 CMD ["node", "server.js"]
