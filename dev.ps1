@@ -1,6 +1,9 @@
 # Script de démarrage pour développement local (Windows PowerShell)
 # Vérifie la présence de ollama, met en place Kimu (Qwen), vérifie Docker et installe les deps.
 
+# Se placer dans le dossier du script pour éviter les erreurs si lancé depuis un dossier parent
+Set-Location $PSScriptRoot
+
 Write-Host "🚀 Démarrage de Outreach Machine (Dev Mode)..." -ForegroundColor Cyan
 
 # 1. Vérification du fichier d'environnement
