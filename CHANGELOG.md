@@ -4,6 +4,16 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-03-22
+### UI/UX Premium Polish
+- **Accents Français Corrigés** : Tous les accents manquants ont été ajoutés dans le pricing, les témoignages, le bento grid, et les pages login/register.
+- **Hero Animations** : Entrée animée du titre (fadeInUp), sous-titre (délai), et bouton CTA (scaleIn + pulse subtil) avec des keyframes CSS pures.
+- **Pricing ⭐ Badge Populaire** : Le plan Professionnel a désormais un badge doré "⭐ Populaire", une bordure accent, et un badge "Économisez 20%" en vert sur le tarif annuel.
+- **Témoignages Améliorés** : Ajout d'étoiles de rating ⭐⭐⭐⭐⭐ et de dots de navigation cliquables sous le carousel.
+- **Toggle Mot de Passe** : Icône œil show/hide sur les pages de connexion et d'inscription.
+- **CTA Arrows** : Flèche → ajoutée aux boutons principaux (Hero + CTA section).
+- **Texte Traduit** : "per month/year, per user" → "par mois/an, par utilisateur" dans le pricing.
+
 ## [3.2.0] - 2026-03-22
 ### Correctifs Majeurs
 - **Navigation Dashboard Réparée** : Les éléments de la barre latérale (Leads, Générer, Réviser, Campagnes, Analytiques, Équipe, Paramètres) sont désormais cliquables et naviguent correctement grâce à l'intégration de `next/link` avec `asChild` dans `nav-main.tsx`.

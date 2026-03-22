@@ -22,7 +22,7 @@ export default function TestimonialsSection() {
   const testimonials = [
     {
       quote:
-        "En quelques minutes, nous avons genere des emails personnalises pour 200 leads. Le processus etait fluide et incroyablement efficace !",
+        "En quelques minutes, nous avons généré des emails personnalisés pour 200 leads. Le processus était fluide et incroyablement efficace !",
       name: "Thomas Dubois",
       company: "Co-fondateur, StartupFlow",
       image:
@@ -30,7 +30,7 @@ export default function TestimonialsSection() {
     },
     {
       quote:
-        "Outreach Machine a revolutionne notre prospection. La generation IA nous fait gagner des heures chaque semaine avec des emails vraiment personnalises.",
+        "Outreach Machine a révolutionné notre prospection. La génération IA nous fait gagner des heures chaque semaine avec des emails vraiment personnalisés.",
       name: "Sophie Martin",
       company: "Head of Sales, TechVenture",
       image:
@@ -38,7 +38,7 @@ export default function TestimonialsSection() {
     },
     {
       quote:
-        "La validation humaine avant envoi est un game-changer. On garde le controle tout en beneficiant de la puissance de l'IA Claude.",
+        "La validation humaine avant envoi est un game-changer. On garde le contrôle tout en bénéficiant de la puissance de l'IA Claude.",
       name: "Antoine Leroy",
       company: "Directeur Commercial, InnovateTech",
       image:
@@ -89,6 +89,14 @@ export default function TestimonialsSection() {
               alt={testimonials[activeTestimonial].name}
             />
             <div className="flex-1 px-6 py-6 shadow-[0px_0px_0px_0.75px_rgba(50,45,43,0.12)] overflow-hidden flex flex-col justify-start items-start gap-6 shadow-none pb-0 pt-0">
+              {/* Star Rating */}
+              <div className="flex gap-1" style={{ filter: isTransitioning ? "blur(4px)" : "blur(0px)", transition: "filter 0.7s ease-in-out" }}>
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#C9A96E" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                  </svg>
+                ))}
+              </div>
               <div
                 className="self-stretch justify-start flex flex-col text-[#49423D] text-2xl md:text-[32px] font-medium leading-10 md:leading-[42px] font-sans h-[200px] md:h-[210px] overflow-hidden line-clamp-5 transition-all duration-700 ease-in-out tracking-tight"
                 style={{
@@ -149,6 +157,22 @@ export default function TestimonialsSection() {
                 </svg>
               </div>
             </button>
+          </div>
+
+          {/* Navigation dots */}
+          <div className="flex gap-2 pr-6 pb-4">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleNavigationClick(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === activeTestimonial
+                    ? "bg-[#37322F] w-6"
+                    : "bg-[rgba(55,50,47,0.20)] hover:bg-[rgba(55,50,47,0.40)]"
+                }`}
+                aria-label={`Témoignage ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>

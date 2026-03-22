@@ -4,6 +4,7 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { IconEye, IconEyeOff } from "@tabler/icons-react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -37,7 +39,7 @@ export default function LoginPage() {
         router.refresh()
       }
     } catch {
-      setError("Une erreur est survenue. Veuillez reessayer.")
+      setError("Une erreur est survenue. Veuillez réessayer.")
     } finally {
       setLoading(false)
     }
@@ -84,7 +86,7 @@ export default function LoginPage() {
               Bon retour
             </h1>
             <p className="text-[rgba(55,50,47,0.60)] text-sm font-normal leading-5">
-              Connectez-vous a votre espace Outreach Machine.
+              Connectez-vous à votre espace Outreach Machine.
             </p>
           </div>
 
@@ -92,7 +94,7 @@ export default function LoginPage() {
           {(error || authError) && (
             <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
               {error || (authError === "OAuthAccountNotLinked"
-                ? "Ce compte est deja lie a une autre methode de connexion."
+                ? "Ce compte est déjà lié à une autre méthode de connexion."
                 : "Une erreur est survenue lors de la connexion.")}
             </div>
           )}
@@ -133,18 +135,28 @@ export default function LoginPage() {
                   href="/forgot-password"
                   className="text-[rgba(55,50,47,0.55)] text-xs font-medium hover:text-[#37322F] transition-colors"
                 >
-                  Mot de passe oublie ?
+                  Mot de passe oublié ?
                 </Link>
               </div>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                className="w-full h-10 px-3 py-2 bg-white border border-[rgba(55,50,47,0.16)] rounded-lg text-[#37322F] text-sm font-normal placeholder:text-[rgba(55,50,47,0.35)] focus:outline-none focus:ring-2 focus:ring-[#37322F]/20 focus:border-[#37322F]/40 transition-all"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full h-10 px-3 pr-10 py-2 bg-white border border-[rgba(55,50,47,0.16)] rounded-lg text-[#37322F] text-sm font-normal placeholder:text-[rgba(55,50,47,0.35)] focus:outline-none focus:ring-2 focus:ring-[#37322F]/20 focus:border-[#37322F]/40 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(55,50,47,0.40)] hover:text-[#37322F] transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                </button>
+              </div>
             </div>
 
             {/* Submit */}
@@ -190,7 +202,7 @@ export default function LoginPage() {
           <p className="text-center text-[rgba(55,50,47,0.50)] text-xs leading-5">
             Pas encore de compte ?{" "}
             <Link href="/register" className="text-[#37322F] font-medium hover:opacity-70 transition-opacity underline underline-offset-2">
-              Creer un compte
+              Créer un compte
             </Link>
           </p>
         </div>

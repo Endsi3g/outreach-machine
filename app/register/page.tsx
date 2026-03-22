@@ -4,6 +4,7 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { IconEye, IconEyeOff } from "@tabler/icons-react"
 
 export default function RegisterPage() {
   const [name, setName] = useState("")
@@ -13,6 +14,7 @@ export default function RegisterPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [agreed, setAgreed] = useState(false)
   const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -170,16 +172,26 @@ export default function RegisterPage() {
               <label htmlFor="password" className="text-[#37322F] text-sm font-medium leading-5">
                 Mot de passe
               </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min. 8 caractères"
-                required
-                minLength={8}
-                className="w-full h-10 px-3 py-2 bg-white border border-[rgba(55,50,47,0.16)] rounded-lg text-[#37322F] text-sm font-normal placeholder:text-[rgba(55,50,47,0.35)] focus:outline-none focus:ring-2 focus:ring-[#37322F]/20 focus:border-[#37322F]/40 transition-all"
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Min. 8 caractères"
+                  required
+                  minLength={8}
+                  className="w-full h-10 px-3 pr-10 py-2 bg-white border border-[rgba(55,50,47,0.16)] rounded-lg text-[#37322F] text-sm font-normal placeholder:text-[rgba(55,50,47,0.35)] focus:outline-none focus:ring-2 focus:ring-[#37322F]/20 focus:border-[#37322F]/40 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(55,50,47,0.40)] hover:text-[#37322F] transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                </button>
+              </div>
               {/* Password strength indicator */}
               {password.length > 0 && (
                 <div className="flex gap-1 mt-1">

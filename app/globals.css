@@ -161,3 +161,85 @@
   --sidebar-border: oklch(0.9 0.02 45);
   --sidebar-ring: oklch(0.45 0.1 45);
 }
+
+/* ═══════════════════════════════════════════════════
+   PREMIUM ANIMATIONS — Hero Entrance & Micro-interactions
+   ═══════════════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(55, 50, 47, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(55, 50, 47, 0);
+  }
+}
+
+/* Utility animation classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.animate-fade-in-up-delay-1 {
+  animation: fadeInUp 0.6s ease-out 0.15s both;
+}
+
+.animate-fade-in-up-delay-2 {
+  animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+.animate-fade-in-up-delay-3 {
+  animation: fadeInUp 0.6s ease-out 0.45s both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out 0.4s both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out both;
+}
+
+.animate-subtle-pulse {
+  animation: subtlePulse 2.5s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* ScrollReveal: elements hidden until visible in viewport */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

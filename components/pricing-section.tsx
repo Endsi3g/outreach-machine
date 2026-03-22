@@ -45,14 +45,14 @@ export default function PricingSection() {
 
           {/* Title */}
           <div className="self-stretch text-center flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-            Choisissez le plan adapte a vos besoins
+            Choisissez le plan adapté à vos besoins
           </div>
 
           {/* Description */}
           <div className="self-stretch text-center text-[#605A57] text-base font-normal leading-7 font-sans">
-            Developpez vos operations avec une tarification flexible qui evolue avec vous.
+            Développez vos opérations avec une tarification flexible qui évolue avec vous.
             <br />
-            Commencez gratuitement, evoluez quand vous etes pret.
+            Commencez gratuitement, évoluez quand vous êtes prêt.
           </div>
         </div>
       </div>
@@ -128,9 +128,9 @@ export default function PricingSection() {
               {/* Plan Header */}
               <div className="self-stretch flex flex-col justify-start items-center gap-9">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
-                  <div className="text-[rgba(55,50,47,0.90)] text-lg font-medium leading-7 font-sans">Decouverte</div>
+                  <div className="text-[rgba(55,50,47,0.90)] text-lg font-medium leading-7 font-sans">Découverte</div>
                   <div className="w-full max-w-[242px] text-[rgba(41,37,35,0.70)] text-sm font-normal leading-5 font-sans">
-                    Parfait pour tester et demarrer vos premieres campagnes.
+                    Parfait pour tester et démarrer vos premières campagnes.
                   </div>
                 </div>
 
@@ -162,7 +162,7 @@ export default function PricingSection() {
                       </span>
                     </div>
                     <div className="text-[#847971] text-sm font-medium font-sans">
-                      per {billingPeriod === "monthly" ? "month" : "year"}, per user.
+                      par {billingPeriod === "monthly" ? "mois" : "an"}, par utilisateur.
                     </div>
                   </div>
                 </div>
@@ -177,9 +177,9 @@ export default function PricingSection() {
 
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
                 {[
-                  "Jusqu'a 50 emails/mois",
+                  "Jusqu'à 50 emails/mois",
                   "Import CSV basique",
-                  "Generation IA Claude",
+                  "Génération IA Claude",
                   "Validation manuelle",
                   "Export des emails",
                 ].map((feature, index) => (
@@ -204,13 +204,17 @@ export default function PricingSection() {
             </div>
 
             {/* Professional Plan (Featured) */}
-            <div className="flex-1 max-w-full md:max-w-none self-stretch px-6 py-5 bg-[#37322F] border border-[rgba(50,45,43,0.12)] border-[rgba(55,50,47,0.12)] overflow-hidden flex flex-col justify-start items-start gap-12">
+            <div className="flex-1 max-w-full md:max-w-none self-stretch px-6 py-5 bg-[#37322F] border-2 border-[#C9A96E] overflow-hidden flex flex-col justify-start items-start gap-12 relative">
+              {/* Popular Badge */}
+              <div className="absolute top-0 right-0 bg-[#C9A96E] text-[#37322F] text-[11px] font-bold px-3 py-1 rounded-bl-lg font-sans tracking-wide uppercase">
+                ⭐ Populaire
+              </div>
               {/* Plan Header */}
               <div className="self-stretch flex flex-col justify-start items-center gap-9">
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
                   <div className="text-[#FBFAF9] text-lg font-medium leading-7 font-sans">Professionnel</div>
                   <div className="w-full max-w-[242px] text-[#B2AEA9] text-sm font-normal leading-5 font-sans">
-                    Fonctionnalites avancees pour les equipes en croissance.
+                    Fonctionnalités avancées pour les équipes en croissance.
                   </div>
                 </div>
 
@@ -242,29 +246,30 @@ export default function PricingSection() {
                       </span>
                     </div>
                     <div className="text-[#D2C6BF] text-sm font-medium font-sans">
-                      per {billingPeriod === "monthly" ? "month" : "year"}, per user.
+                      par {billingPeriod === "monthly" ? "mois" : "an"}, par utilisateur.
+                      {billingPeriod === "annually" && <span className="ml-2 text-[#4ADE80] text-xs font-semibold">Économisez 20%</span>}
                     </div>
                   </div>
                 </div>
 
                 {/* CTA Button */}
-                <div className="self-stretch px-4 py-[10px] relative bg-[#FBFAF9] shadow-[0px_2px_4px_rgba(55,50,47,0.12)] overflow-hidden rounded-[99px] flex justify-center items-center">
+                <div className="self-stretch px-4 py-[10px] relative bg-[#FBFAF9] shadow-[0px_2px_4px_rgba(55,50,47,0.12)] overflow-hidden rounded-[99px] flex justify-center items-center cursor-pointer hover:bg-[#F0EFEE] transition-colors">
                   <div className="w-full h-[41px] absolute left-0 top-[-0.5px] bg-gradient-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
                   <div className="max-w-[108px] flex justify-center flex-col text-[#37322F] text-[13px] font-medium leading-5 font-sans">
-                    Demarrer
+                    Démarrer →
                   </div>
                 </div>
               </div>
 
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
                 {[
-                  "Emails illimites",
-                  "Import CSV avance",
-                  "Generation IA optimisee",
-                  "Modeles personnalises",
-                  "Analytics avances",
+                  "Emails illimités",
+                  "Import CSV avancé",
+                  "Génération IA optimisée",
+                  "Modèles personnalisés",
+                  "Analytics avancés",
                   "Envoi via Brevo SMTP",
-                  "Acces API",
+                  "Accès API",
                   "Support prioritaire",
                 ].map((feature, index) => (
                   <div key={index} className="self-stretch flex justify-start items-center gap-[13px]">
@@ -292,7 +297,7 @@ export default function PricingSection() {
                 <div className="self-stretch flex flex-col justify-start items-start gap-2">
                   <div className="text-[rgba(55,50,47,0.90)] text-lg font-medium leading-7 font-sans">Entreprise</div>
                   <div className="w-full max-w-[242px] text-[rgba(41,37,35,0.70)] text-sm font-normal leading-5 font-sans">
-                    Solution complete pour les grandes organisations.
+                    Solution complète pour les grandes organisations.
                   </div>
                 </div>
 
@@ -324,7 +329,7 @@ export default function PricingSection() {
                       </span>
                     </div>
                     <div className="text-[#847971] text-sm font-medium font-sans">
-                      per {billingPeriod === "monthly" ? "month" : "year"}, per user.
+                      par {billingPeriod === "monthly" ? "mois" : "an"}, par utilisateur.
                     </div>
                   </div>
                 </div>
@@ -340,11 +345,11 @@ export default function PricingSection() {
               <div className="self-stretch flex flex-col justify-start items-start gap-2">
                 {[
                   "Tout de Professionnel",
-                  "Gestionnaire de compte dedie",
+                  "Gestionnaire de compte dédié",
                   "Support 24/7",
-                  "Onboarding personnalise",
-                  "Securite avancee",
-                  "Integration SSO",
+                  "Onboarding personnalisé",
+                  "Sécurité avancée",
+                  "Intégration SSO",
                   "Contrats sur mesure",
                   "Options marque blanche",
                 ].map((feature, index) => (
