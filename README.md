@@ -21,8 +21,9 @@
 
 Imaginez avoir un commercial d'élite, capable d'étudier vos prospects en profondeur, de croiser leurs données, et de leur rédiger des messages d'une précision chirurgicale, sans jamais s'arrêter. C'est exactement ce que propose cette plateforme.
 
-### 🧠 Intégration de Kimu 2.5 (Qwen) & Agents Vercel
-Grâce à nos **Agents Vercel** ultra-rapides, le système navigue _réellement_ sur le site web de chaque prospect en coulisse. L'information est ensuite transmise à **Kimu 2.5** (un modèle LLM local ultra-performant), qui analyse ces données pour sculpter des courriels marketing absoluments uniques, basés sur **trois structures comportementales éprouvées**.
+### 🧠 Intégration de Kimi K2-5 & Agents Vercel
+Grâce à nos **Agents Vercel** ultra-rapides, le système navigue _réellement_ sur le site web de chaque prospect en coulisse. L'outil dispose même d'un **Fallback Playwright** (Navigateur Headless) capable de contourner automatiquement les protections Cloudflare et de rendre les sites récents (SPA SPA React/Vue) si la méthode classique échoue.
+L'information est ensuite transmise à **Kimi K2-5** (hébergé sur votre instance locale Ollama ou **Ollama Cloud**), qui analyse ces données pour sculpter des courriels marketing absoluments uniques, basés sur **trois structures comportementales éprouvées**.
 
 ### 📨 Google Suite & Token Efficiency
 L'application est profondément ancrée dans l'écosystème Google de votre entreprise. 

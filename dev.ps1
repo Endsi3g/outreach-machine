@@ -13,27 +13,37 @@ if (-Not (Test-Path ".env.local")) {
 Write-Host "📦 Installation des dépendances avec pnpm..." -ForegroundColor Green
 pnpm install
 
-# 3. Configuration de Kimu (Ollama)
-Write-Host "🤖 Configuration de l'IA Locale (Kimu)" -ForegroundColor Cyan
-$kimuChoice = Read-Host "Voulez-vous utiliser Kimu 2.5 (1) ou Kimu 2.4.2.5 (2) ? [1/2]"
-if ($kimuChoice -eq "2") {
-    $model = "qwen2.5:1.5b"
-    Write-Host "⬇️ Téléchargement et lancement de Kimu 2.4.2.5 ($model)..." -ForegroundColor Green
-} else {
-    $model = "qwen2.5"
-    Write-Host "⬇️ Téléchargement et lancement de Kimu 2.5 ($model)..." -ForegroundColor Green
+# 3. Configuration de Kimi K2-5 & Ollama Cloud
+Write-Host "🤖 Configuration de l'IA Kimi K2-5" -ForegroundColor Cyan
+
+$cloudChoice = Read-Host "Utilisez-vous une instance Ollama Cloud distante ? (O/N) [Par défaut N]"
+if ($cloudChoice -match "^[OoYy]") {
+    $cloudUrl = Read-Host "Entrez l'URL de votre instance Cloud (ex: http://votre-serveur:11434)"
+    if ($cloudUrl) {
+        $env:OLLAMA_BASE_URL = $cloudUrl
+        Write-Host "🌐 Mode Cloud activé vers $cloudUrl" -ForegroundColor Green
+    }
 }
+
+$model = "kimi:k2-5"
+Write-Host "⬇️ Utilisation du modèle Kimi K2-5 ($model)..." -ForegroundColor Green
+
 # Met à jour la variable d'environnement pour cette session
 $env:OLLAMA_MODEL = $model
-# On essaie de pull le modèle en background
-Start-Job -ScriptBlock { param($m) ollama pull $m } -ArgumentList $model | Out-Null
 
-try {
-    $null = Get-Process ollama -ErrorAction Stop
-    Write-Host "✅ Serveur Ollama détecté en cours d'exécution." -ForegroundColor Green
-} catch {
-    Write-Host "⚠️ Attention : Ollama n'est pas en cours d'exécution." -ForegroundColor Yellow
-    Write-Host "Veuillez lancer l'application Ollama ou exécuter 'ollama serve' dans un autre terminal."
+# On essaie de pull le modèle de façon asynchrone (utile si on est en local)
+if (-Not $env:OLLAMA_BASE_URL) {
+    Start-Job -ScriptBlock { param($m) ollama pull $m } -ArgumentList $model | Out-Null
+}
+
+if (-Not $env:OLLAMA_BASE_URL) {
+    try {
+        $null = Get-Process ollama -ErrorAction Stop
+        Write-Host "✅ Serveur Ollama Local détecté en cours d'exécution." -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️ Attention : Ollama Local n'est pas en cours d'exécution." -ForegroundColor Yellow
+        Write-Host "Veuillez lancer l'application Ollama ou configurer une instance Cloud."
+    }
 }
 
 # 4. Lancement (Docker ou Local)
