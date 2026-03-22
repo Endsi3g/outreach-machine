@@ -5,8 +5,8 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 # Install pnpm and configure it for the target platform
 RUN npm install -g pnpm && \
-    pnpm config set supportedArchitectures.os ["linux"] && \
-    pnpm config set supportedArchitectures.cpu ["x64"] && \
+    pnpm config set supportedArchitectures.os linux && \
+    pnpm config set supportedArchitectures.cpu x64 && \
     pnpm install --no-frozen-lockfile
 
 ## Stage 2: Builder

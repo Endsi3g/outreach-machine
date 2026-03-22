@@ -4,6 +4,12 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0] - 2026-03-22
+### Remote Access & Build Optimization
+- **Docker Fix V3** : Final fix for Tailwind CSS 4 native bindings (`oxide`) in Docker by correctly configuring `pnpm` architecture and using `node:20-bookworm-slim`.
+- **Remote Access Tools** : Added automated installation scripts for `ngrok` and `Cloudflare Tunnel` (`scripts/ngrok_install.ps1`, `scripts/cloudflare_install.ps1`).
+- **New Documentation** : Creation of `docs/REMOTE_ACCESS.md`, a complete step-by-step guide for setting up external access to the local instance.
+
 ## [3.5.1] - 2026-03-22
 ### Build & Branding Consistency
 - **Docker Fix** : Transitioned to `node:20-bookworm-slim` and optimized `pnpm` configuration to resolve native binding issues with Tailwind CSS 4 (`oxide`).
