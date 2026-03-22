@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function FooterSection() {
   return (
     <div className="w-full pt-10 flex flex-col justify-start items-start">
