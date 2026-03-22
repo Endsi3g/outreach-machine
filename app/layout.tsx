@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Instrument_Serif } from "next/font/google"
 import { AuthProvider } from "@/components/auth-provider"
+import { SmoothScroll } from "@/components/smooth-scroll"
 import "./globals.css"
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400&display=swap" />
       </head>
       <body className="font-sans antialiased">
+        <SmoothScroll />
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
