@@ -1,5 +1,10 @@
 # Changelog
  
+## [3.7.5] - 2026-03-22
+### Fixed
+- **Authentication Resilience**: Optimized Supabase queries using `maybeSingle()` to handle non-existent users gracefully during login and registration.
+- **Admin Access**: Integrated `getSupabaseAdmin()` in the authentication flow to bypass RLS restrictions for critical account creation/verification.
+ 
 ## [3.7.4] - 2026-03-22
 ### Added
 - **Optimized Loading States**: Added `loading.tsx` skeletons for all dashboard pages (Leads, Settings, Planning) for instant feedback during navigation.

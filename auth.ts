@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 
-import { supabase } from "@/lib/supabase"
+import { getSupabaseAdmin } from "@/lib/supabase"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -37,18 +37,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Email et mot de passe requis")
         }
 
+        const supabase = getSupabaseAdmin()
+
         // Registration flow
         if (action === "register") {
           if (!name) {
             throw new Error("Nom requis pour l'inscription")
           }
           
-          // Check if user exists in profiles or a dedicated auth table
-          const { data: existingUser } = await supabase
+          // Check if user exists using maybeSingle to avoid PGRST116 (no rows) error
+          const { data: existingUser, error: checkError } = await supabase
             .from("profiles")
             .select("user_id")
             .eq("sender_email", email)
-            .single()
+            .maybeSingle()
+
+          if (checkError) {
+            console.error("Supabase check error:", checkError)
+            throw new Error("Erreur lors de la vérification du compte")
+          }
 
           if (existingUser) {
             throw new Error("Un compte existe deja avec cet email")
@@ -57,7 +64,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const id = crypto.randomUUID()
           // In a real app, we'd use Supabase Auth, but since we are using 
           // a custom callback, we store in profiles.
-          const { error } = await supabase
+          const { error: insertError } = await supabase
             .from("profiles")
             .insert({ 
               user_id: id, 
@@ -68,18 +75,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               signature: `password_hash:${password}` 
             })
 
-          if (error) throw error
+          if (insertError) {
+            console.error("Supabase insert error:", insertError)
+            throw new Error("Erreur lors de la création du compte")
+          }
+
           return { id, name, email }
         }
 
         // Login flow
-        const { data: user, error } = await supabase
+        const { data: user, error: loginError } = await supabase
           .from("profiles")
           .select("*")
           .eq("sender_email", email)
-          .single()
+          .maybeSingle()
 
-        if (error || !user || user.signature !== `password_hash:${password}`) {
+        if (loginError) {
+          console.error("Supabase login error:", loginError)
+          throw new Error("Erreur lors de la connexion")
+        }
+
+        if (!user || user.signature !== `password_hash:${password}`) {
           throw new Error("Email ou mot de passe incorrect")
         }
         
