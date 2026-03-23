@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { NotificationsPanel } from "@/components/notifications-panel"
+import { NotificationsPanel } from "@/components/notifications-panel"
+import { ModelSelector } from "@/components/ui/model-selector"
 import { IconPlus, IconInbox, IconLoader2 } from "@tabler/icons-react"
 import { useRouter } from "next/navigation"
 
@@ -50,6 +52,7 @@ export function SiteHeader() {
         />
         <h1 className="text-base font-medium">{currentPage}</h1>
         <div className="ml-auto flex items-center gap-2">
+          <ModelSelector className="hidden md:flex" />
           {/* Quick Create Button */}
           <div className="relative">
             <button

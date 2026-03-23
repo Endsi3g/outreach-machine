@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { leadName, leadCompany, leadPosition, leadWebsite, campaignSubject, tone, language } =
+    const { leadName, leadCompany, leadPosition, leadWebsite, campaignSubject, tone, language, modelId } =
       await request.json()
 
     const prompt = `Génère un email de prospection selon les instructions suivantes.

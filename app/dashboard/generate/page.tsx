@@ -18,8 +18,11 @@ import { TextShimmer } from "@/components/ui/text-shimmer"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AIInputWithLoading } from "@/components/ui/ai-input-with-loading"
 import { AgentPlan } from "@/components/ui/agent-plan"
+import { useModelStore } from "@/hooks/use-model-store"
+import { ThinkingProcess, parseThinking } from "@/components/ui/thinking-process"
 
 export default function GeneratePage() {
+  const { selectedModel } = useModelStore()
   const [leadName, setLeadName] = React.useState("")
   const [leadCompany, setLeadCompany] = React.useState("")
   const [leadPosition, setLeadPosition] = React.useState("")
@@ -65,6 +68,7 @@ export default function GeneratePage() {
         campaignSubject,
         tone: "professionnel et amical",
         language: "français",
+        modelId: selectedModel,
       },
     })
   }
@@ -190,8 +194,18 @@ export default function GeneratePage() {
                 {error.message || "Erreur de génération. Vérifiez qu'Ollama est lancé (ollama serve)."}
               </div>
             ) : completion ? (
-              <div className="space-y-4 whitespace-pre-wrap rounded-lg border bg-muted/30 p-4 text-sm leading-relaxed">
-                {completion}
+              <div className="flex flex-col gap-2">
+                {parseThinking(completion).thinkingText && (
+                  <ThinkingProcess 
+                    content={parseThinking(completion).thinkingText!} 
+                    isStreaming={isLoading} 
+                  />
+                )}
+                {parseThinking(completion).finalContent && (
+                  <div className="space-y-4 whitespace-pre-wrap rounded-lg border bg-muted/30 p-4 text-sm leading-relaxed">
+                    {parseThinking(completion).finalContent}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground p-8">

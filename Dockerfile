@@ -1,6 +1,6 @@
 ## Stage 1: Dependencies
-FROM node:20-bookworm-slim AS deps
-RUN apt-get update && apt-get install -y libc6 python3 make g++ && rm -rf /var/lib/apt/lists/*
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 # Install pnpm and configure it for the target platform
@@ -10,7 +10,7 @@ RUN npm install -g pnpm && \
     pnpm install --no-frozen-lockfile
 
 ## Stage 2: Builder
-FROM node:20-bookworm-slim AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -19,7 +19,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm install -g pnpm && pnpm run build
 
 ## Stage 3: Runner
-FROM node:20-bookworm-slim AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
