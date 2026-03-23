@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
         resend_api_key: resendKey ? `${resendKey.substring(0, 6)}${"•".repeat(Math.max(0, resendKey.length - 6))}` : "",
         apify_token: apifyToken ? `${apifyToken.substring(0, 6)}${"•".repeat(Math.max(0, apifyToken.length - 6))}` : "",
         sentry_dsn: data.sentry_dsn || "",
+        preferred_outreach_provider: data.preferred_outreach_provider || "resend",
         has_resend_key: !!resendKey,
         has_apify_token: !!apifyToken,
       },
@@ -58,6 +59,9 @@ export async function POST(request: NextRequest) {
     if (ollamaUrl !== undefined) payload.ollama_url = ollamaUrl
     if (ollamaModel !== undefined) payload.ollama_model = ollamaModel
     if (sentryDsn !== undefined) payload.sentry_dsn = sentryDsn
+    if (request.json && (await request.clone().json()).preferredProvider) {
+      payload.preferred_outreach_provider = (await request.clone().json()).preferredProvider
+    }
 
     // Only re-encrypt if the user actually typed a new key (not the masked one)
     if (resendApiKey && !resendApiKey.includes("•")) {

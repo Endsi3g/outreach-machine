@@ -8,6 +8,13 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { IconCheck, IconLoader2, IconShieldLock, IconKey } from "@tabler/icons-react"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 
@@ -31,6 +38,7 @@ export default function SettingsPage() {
   const [sentryDsn, setSentryDsn] = React.useState("")
   const [hasResendKey, setHasResendKey] = React.useState(false)
   const [hasApifyToken, setHasApifyToken] = React.useState(false)
+  const [preferredProvider, setPreferredProvider] = React.useState("resend")
 
   // Load profile + settings
   React.useEffect(() => {
@@ -60,6 +68,7 @@ export default function SettingsPage() {
             setApifyToken(settings.apify_token || "")
             setHasResendKey(settings.has_resend_key || false)
             setHasApifyToken(settings.has_apify_token || false)
+            setPreferredProvider(settings.preferred_outreach_provider || "resend")
           }
         }
       } catch (error) {
@@ -100,6 +109,7 @@ export default function SettingsPage() {
           resendApiKey: resendKey,
           apifyToken,
           sentryDsn,
+          preferredProvider,
         }),
       })
       if (!res.ok) throw new Error("Erreur de sauvegarde des clés")
@@ -229,6 +239,26 @@ export default function SettingsPage() {
                 value={sentryDsn}
                 onChange={(e) => setSentryDsn(e.target.value)}
               />
+            </div>
+
+            <Separator />
+
+            {/* Outreach Provider */}
+            <div className="flex flex-col gap-2">
+              <Label>Canal d&apos;expédition par défaut</Label>
+              <CardDescription className="mb-1 text-xs">
+                Choisissez Gmail si vous êtes connecté via Google OAuth, ou Resend pour des envois via API.
+              </CardDescription>
+              <Select value={preferredProvider} onValueChange={setPreferredProvider}>
+                <SelectTrigger className="w-full sm:w-[280px]">
+                  <SelectValue placeholder="Choisir un expéditeur" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="resend">Resend (API Key)</SelectItem>
+                  <SelectItem value="gmail">Gmail (Google OAuth)</SelectItem>
+                  <SelectItem value="auto">Automatique (Priorité Gmail)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <Button onClick={handleSaveKeys} disabled={savingKeys} className="w-full sm:w-auto">

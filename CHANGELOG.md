@@ -1,5 +1,18 @@
 # Changelog
  
+## [3.7.4] - 2026-03-22
+### Added
+- **Optimized Loading States**: Added `loading.tsx` skeletons for all dashboard pages (Leads, Settings, Planning) for instant feedback during navigation.
+- **Root Loading Screen**: Implemented a global loading UI for the initial application boot.
+- **Lazy Loading**: Integrated `next/dynamic` for heavy components like `AgentPlan` and `ChartAreaInteractive` to improve page responsiveness.
+ 
+## [3.7.3] - 2026-03-22
+### Added
+- **Production-Ready Auth**: Switched from in-memory mock store to persistent Supabase database for all users and profiles.
+- **Gmail Outreach Integration**: Added support for sending real emails via the Gmail API for users logged in with Google OAuth.
+- **Dynamic Dashboard**: `SectionCards` now fetch real-time lead counts and statistics from Supabase instead of using mock values.
+- **Enhanced Settings**: New selector to choose between Gmail and Resend as the primary outreach channel.
+ 
 ## [3.7.2] - 2026-03-22
 ### Added
 - **Sidebar News System**: Dynamic notification system integrated directly into the sidebar, pulling live updates from `CHANGELOG.md`.

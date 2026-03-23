@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabase } from "@/lib/supabase"
 import { rateLimit } from "@/lib/rate-limit"
+import { auth } from "@/auth"
 
 // GET /api/leads — List all leads for the current user
 export async function GET(request: NextRequest) {
-  const userId = request.headers.get("x-user-id") || "anonymous"
+  const session = await auth()
+  const userId = session?.user?.id || request.headers.get("x-user-id") || "anonymous"
 
   const { data, error } = await supabase
     .from("leads")
@@ -29,12 +31,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { userId, name, email, company, position, website, linkedinUrl, phone, tags } = body
+    const session = await auth()
+    const { name, email, company, position, website, linkedinUrl, phone, tags } = body
+    const finalUserId = session?.user?.id || body.userId || "anonymous"
 
     const { data, error } = await supabase
       .from("leads")
       .insert({
-        user_id: userId || "anonymous",
+        user_id: finalUserId,
         name, email, company, position,
         website, linkedin_url: linkedinUrl, phone,
         tags: tags || [],

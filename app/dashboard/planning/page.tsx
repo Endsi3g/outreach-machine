@@ -1,9 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { AgentPlan } from "@/components/ui/agent-plan"
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import { IconBrain } from "@tabler/icons-react"
+
+const AgentPlan = dynamic(() => import("@/components/ui/agent-plan").then(mod => mod.AgentPlan), {
+  loading: () => <Skeleton className="h-[500px] w-full rounded-xl" />,
+  ssr: false
+})
 
 export default function PlanningPage() {
   return (
