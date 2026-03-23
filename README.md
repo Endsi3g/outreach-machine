@@ -5,6 +5,8 @@
 
   **L'Engine de Prospection Totalement Autonome et Hyper-Générateur de Revenus.** <br />
   *Intégrant Kimu 2.5, Vercel Agents, et toute la puissance de la Suite Google.*
+  
+  **Version: 3.7.1 "London Stable"**
 
   [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![AI](https://img.shields.io/badge/Local_AI-Kimu_2.5-blue.svg?style=for-the-badge&logo=ollama)](https://ollama.com/)

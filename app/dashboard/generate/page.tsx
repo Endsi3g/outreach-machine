@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -26,7 +26,7 @@ export default function GeneratePage() {
   const [copied, setCopied] = React.useState(false)
 
   const { completion, isLoading, complete, error } = useCompletion({
-    api: "/api/ai/generate",
+    api: "/api/chat/generate",
   })
 
   const handleGenerate = async () => {

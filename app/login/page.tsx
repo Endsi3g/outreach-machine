@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { IconEye, IconEyeOff } from "@tabler/icons-react"
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -72,7 +72,7 @@ export default function LoginPage() {
         <div className="text-[rgba(55,50,47,0.60)] text-sm font-normal">
           Pas encore de compte ?{" "}
           <Link href="/register" className="text-[#37322F] font-medium underline underline-offset-2 hover:opacity-70 transition-opacity">
-            S&apos;inscrire
+            S&apos;inscirire
           </Link>
         </div>
       </nav>
@@ -215,5 +215,13 @@ export default function LoginPage() {
         </p>
       </footer>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FBFAF9] flex items-center justify-center">Chargement...</div>}>
+      <LoginContent />
+    </Suspense>
   )
 }

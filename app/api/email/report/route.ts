@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { resend, FROM_EMAIL } from "@/lib/resend"
 
+export const dynamic = "force-dynamic"
+
 export async function POST(request: NextRequest) {
   try {
     const { to, campaignName, stats } = await request.json()

@@ -5,6 +5,8 @@ import { rateLimit } from "@/lib/rate-limit"
 import { webScraperTool } from "@/lib/tools"
 import { KIMU_SYSTEM_PROMPT } from "@/lib/templates"
 
+export const dynamic = "force-dynamic"
+
 export async function POST(request: NextRequest) {
   // Rate limiting
   const ip = request.headers.get("x-forwarded-for") || "anonymous"

@@ -1,4 +1,16 @@
 # Changelog
+ 
+## [3.7.1] - 2026-03-22
+### Fixed
+- **Dependency Issues**: Resolved missing `framer-motion` requirement for `TextShimmer` and other UI components.
+- **Build Conflicts**: Renamed `/api/ai` to `/api/chat` to avoid namespace collisions with the `ai` package during production builds.
+- **SDK Stability**: Downgraded `ai` package to `4.1.21` to resolve `LanguageModel` type mismatches with `ollama-ai-provider`.
+- **Static Generation**: Added `<Suspense>` boundaries to `/login` and `/register` pages to prevent build-time crashes caused by `useSearchParams()`.
+- **Component Bug**: Fixed a `ReferenceError` in `AgentPlan` due to an undefined `status` variable.
+ 
+### Added
+- **UI Enhancements**: Integrated premium components (`TextShimmer`, `AIInputWithLoading`, `AgentPlan`) for a more interactive experience.
+- **Improved Routing**: Centralized AI generation logic under the `/api/chat` namespace.
 
 Toutes les modifications notables apportées à ce projet seront documentées dans ce fichier.
 

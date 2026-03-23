@@ -58,13 +58,6 @@ export function AgentPlan({ steps = defaultSteps }: AgentPlanProps) {
         </div>
       </CardHeader>
       <CardContent className="grid gap-6">
-        {status === "completed" ? (
-                  <CheckCircle2 className="size-5 text-green-500" />
-                ) : status === "in-progress" ? (
-                  <Clock className="size-5 text-primary animate-spin" style={{ animationDuration: '3s' }} />
-                ) : (
-                  <Circle className="size-5 text-muted-foreground" />
-                )}
         {steps.map((step, index) => (
           <div key={step.id} className="relative flex gap-4 last:pb-0">
             {index !== steps.length - 1 && (

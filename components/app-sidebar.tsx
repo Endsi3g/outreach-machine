@@ -67,7 +67,7 @@ const data = {
     {
       title: "Réviser",
       url: "/dashboard/review",
-      icon: IconClipboardList,
+      icon: IconChecklist,
     },
     {
       title: "Campagnes",
