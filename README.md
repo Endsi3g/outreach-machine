@@ -6,7 +6,7 @@
   **L'Engine de Prospection Totalement Autonome et Hyper-Générateur de Revenus.** <br />
   *Intégrant Kimu 2.5, Vercel Agents, et toute la puissance de la Suite Google.*
   
-  **Version: 3.7.1 "London Stable"**
+  **Version: 6.1.0 "London Enterprise"**
 
   [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![AI](https://img.shields.io/badge/Local_AI-Kimu_2.5-blue.svg?style=for-the-badge&logo=ollama)](https://ollama.com/)
@@ -23,9 +23,12 @@
 
 Imaginez avoir un commercial d'élite, capable d'étudier vos prospects en profondeur, de croiser leurs données, et de leur rédiger des messages d'une précision chirurgicale, sans jamais s'arrêter. C'est exactement ce que propose cette plateforme.
 
-### 🧠 Intégration de Kimi K2-5 & Agents Vercel
-Grâce à nos **Agents Vercel** ultra-rapides, le système navigue _réellement_ sur le site web de chaque prospect en coulisse. L'outil dispose même d'un **Fallback Playwright** (Navigateur Headless) capable de contourner automatiquement les protections Cloudflare et de rendre les sites récents (SPA SPA React/Vue) si la méthode classique échoue.
-L'information est ensuite transmise à **Kimi K2-5** (hébergé sur votre instance locale Ollama ou **Ollama Cloud**), qui analyse ces données pour sculpter des courriels marketing absoluments uniques, basés sur **trois structures comportementales éprouvées**.
+### 🧠 Intégration de Kimi K-2.5 & Agents Vercel
+Grâce à nos **Agents Vercel** ultra-rapides, le système navigue _réellement_ sur le site web de chaque prospect en coulisse. L'outil dispose même d'un **Fallback Playwright** (Navigateur Headless) capable de contourner automatiquement les protections Cloudflare.
+L'information est ensuite transmise à **Kimi K-2.5** (hébergé sur votre instance locale Ollama ou **Ollama Cloud**), qui analyse ces données pour sculpter des courriels marketing absoluments uniques.
+
+### 🛡️ Cloudflare Zero Trust Ready
+L'application est configurée pour un déploiement fluide derrière Cloudflare (WAF, SSL Strict, Proxied DNS). Lisez le document [CLOUDFLARE_NEXT_STEPS.md](docs/CLOUDFLARE_NEXT_STEPS.md) pour finaliser le déploiement sécurisé en production.
 
 ### 📨 Google Suite & Token Efficiency
 L'application est profondément ancrée dans l'écosystème Google de votre entreprise. 
@@ -46,7 +49,7 @@ Embarqué dans une image Docker isolée, Alpine Node, et construite en `standalo
 - **Prospection à très forte conversion** : L'IA ne devine pas. Elle "*lit*" le site de votre prospect avant d'écrire.
 - **Réduction des coûts** : Totalement hébergée en local via Ollama et Docker, l'IA ne vous coûte littéralement **rien** en frais d'API (OpenAI / Anthropic).
 - **Interface Premium** : Conçue pour que votre équipe ait envie de l'utiliser au quotidien.
-- **Lancement magique** : Le script `dev.ps1` configure intelligemment votre environnement, télécharge Kimu 2.5, et lance le Dashboard en 1 clic.
+- **Lancement magique** : Le script `dev.ps1` configure intelligemment votre environnement, télécharge Kimi K-2.5 via Ollama, et lance le Dashboard en 1 clic.
 
 ---
 
