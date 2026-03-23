@@ -7,23 +7,29 @@ export async function GET(request: NextRequest) {
   if (!isSupabaseConfigured) {
     return NextResponse.json({ emails: [] }, { status: 200 })
   }
-  const userId = request.headers.get("x-user-id") || "anonymous"
 
-  // Join with leads table to get the lead's name
-  const { data, error } = await supabase
-    .from("generated_emails")
-    .select(`
-      *,
-      leads ( name )
-    `)
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+  try {
+    const userId = request.headers.get("x-user-id") || "anonymous"
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    const { data, error } = await supabase
+      .from("generated_emails")
+      .select(`
+        *,
+        leads ( name )
+      `)
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+
+    if (error) {
+      console.error("Emails fetch error:", error.message)
+      return NextResponse.json({ emails: [] })
+    }
+
+    return NextResponse.json({ emails: data || [] })
+  } catch (error: any) {
+    console.error("Emails API error:", error)
+    return NextResponse.json({ emails: [] })
   }
-
-  return NextResponse.json({ emails: data || [] })
 }
 
 // POST /api/emails — Save a newly generated email

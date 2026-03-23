@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from "react"
 import { IconTrendingDown, IconTrendingUp, IconLoader2 } from "@tabler/icons-react"
 import { useSession } from "next-auth/react"

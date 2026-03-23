@@ -42,7 +42,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "Tableau de bord",
       url: "/dashboard",
       icon: IconDashboard,
     },
@@ -57,14 +57,14 @@ const data = {
       icon: IconSparkles,
     },
     {
-      title: "Planning",
-      url: "/dashboard/planning",
+      title: "Assistant IA",
+      url: "/dashboard/assistant",
       icon: IconBrain,
     },
     {
-      title: "Outline",
-      url: "/dashboard/outline",
-      icon: IconFileText,
+      title: "Planification",
+      url: "/dashboard/planification",
+      icon: IconClipboardList,
     },
     {
       title: "Réviser",

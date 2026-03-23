@@ -4,19 +4,25 @@ import { rateLimit } from "@/lib/rate-limit"
 
 // GET /api/campaigns — List all campaigns for current user
 export async function GET(request: NextRequest) {
-  const userId = request.headers.get("x-user-id") || "anonymous"
+  try {
+    const userId = request.headers.get("x-user-id") || "anonymous"
 
-  const { data, error } = await supabase
-    .from("campaigns")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
+    const { data, error } = await supabase
+      .from("campaigns")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error("Campaigns fetch error:", error.message)
+      return NextResponse.json({ campaigns: [] })
+    }
+
+    return NextResponse.json({ campaigns: data || [] })
+  } catch (error: any) {
+    console.error("Campaigns API error:", error)
+    return NextResponse.json({ campaigns: [] })
   }
-
-  return NextResponse.json({ campaigns: data || [] })
 }
 
 // POST /api/campaigns — Create a new campaign

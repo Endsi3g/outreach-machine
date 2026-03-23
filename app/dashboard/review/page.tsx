@@ -10,6 +10,7 @@ import {
   IconX,
   IconSend,
   IconLoader2,
+  IconMail,
 } from "@tabler/icons-react"
 import { toast } from "sonner"
 

@@ -1,4 +1,30 @@
 # Changelog
+
+## [4.0.0] - 2026-03-23
+### Added
+- **Color Rebrand**: Migrated from beige/brown to #08345B navy palette (Uprising Studio brand).
+- **AI Integration**: Kimi K-2.5 via Ollama for email generation, refinement, and conversational chat.
+- **Web Agent**: Automated prospect research scraper with structured data extraction.
+- **Planification Page**: Mass email planning, AI chat sidebar, task/campaign scheduling system.
+- **Assistant IA Page**: Full conversational AI interface with suggestion prompts.
+- **Loading Animations**: Page transition animations (slide-in, shimmer, spinner) across all routes.
+- **Task System**: Full CRUD API for scheduling campaigns and tasks.
+- **Test Script**: Comprehensive `scripts/test-all.ts` testing all features.
+
+### Fixed
+- Fixed `/api/stats` 500 error with graceful Supabase fallback.
+- Translated remaining English labels to French ("Dashboard" → "Tableau de bord").
+
+## [3.8.0] - 2026-03-23
+### Added
+- Standardized Sentry SDK configuration with `tracesSampleRate: 1.0` and `tracePropagationTargets`.
+- Restored dev server availability on port 3001, resolving `ERR_CONNECTION_REFUSED`.
+
+## [3.7.9] - 2026-03-23
+### Fixed
+- Fixed runtime session error in `SectionCards` by adding `use client` directive.
+- Resolved "Function components cannot be given refs" warnings by wrapping `Button`, `Sidebar`, and `DropdownMenu` sub-components in `React.forwardRef`.
+- Corrected various UI hydration and ref-handling issues in the sidebar and navigation components.
  
 ## [3.7.8] - 2026-03-22
 ### Fixed

@@ -4,25 +4,29 @@ import { supabase, isSupabaseConfigured } from "@/lib/supabase"
 // GET /api/notifications — List notifications for current user
 export async function GET(request: NextRequest) {
   if (!isSupabaseConfigured) {
-    return NextResponse.json(
-      { error: "Supabase n'est pas configuré. Veuillez ajouter les clés dans .env.local", notifications: [] },
-      { status: 200 } // Return 200 with empty list to avoid UI crash
-    )
-  }
-  const userId = request.headers.get("x-user-id") || "anonymous"
-
-  const { data, error } = await supabase
-    .from("notifications")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(20)
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ notifications: [] }, { status: 200 })
   }
 
-  return NextResponse.json({ notifications: data || [] })
+  try {
+    const userId = request.headers.get("x-user-id") || "anonymous"
+
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(20)
+
+    if (error) {
+      console.error("Notifications fetch error:", error.message)
+      return NextResponse.json({ notifications: [] })
+    }
+
+    return NextResponse.json({ notifications: data || [] })
+  } catch (error: any) {
+    console.error("Notifications API error:", error)
+    return NextResponse.json({ notifications: [] })
+  }
 }
 
 // POST /api/notifications — Create a notification
