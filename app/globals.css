@@ -287,3 +287,13 @@
 .animate-spinner {
   animation: spinnerRotate 0.8s linear infinite;
 }
+
+@keyframes progressBar {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+.animate-progress-bar {
+  animation: progressBar 0.8s ease-in-out forwards;
+}

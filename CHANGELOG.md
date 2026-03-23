@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.0.0] - 2026-03-23
+### Added
+- **ICP Scoring**: Company analysis page with web agent research, ICP score calculation (0-100), decision maker extraction, tech stack detection.
+- **A/B Testing**: Full A/B email testing system with variant comparison, winner detection, open/reply rate stats.
+- **Reports & PDF**: Pipeline report generation with branded PDF export (Uprising Studio navy theme).
+- **Sidebar Sub-groups**: Navigation reorganized into 4 groups (Principal, Outreach, Campagnes, Organisation) to reduce clutter.
+- **Quick Create**: Functional dropdown menu in header for fast lead/email/campaign creation.
+- **Page Transitions**: Loading bar + fade animation between pages via PageTransition component and Suspense fallback.
+- **Dynamic Header**: Page name updates automatically based on current route.
+
+### Fixed
+- Removed non-functional Quick Create/Inbox buttons from sidebar (moved to header).
+- NavMain simplified to work with grouped sidebar layout.
+
 ## [4.0.0] - 2026-03-23
 ### Added
 - **Color Rebrand**: Migrated from beige/brown to #08345B navy palette (Uprising Studio brand).

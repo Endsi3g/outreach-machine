@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 import {
   IconChartBar,
   IconDashboard,
-  IconFileDescription,
   IconHelp,
   IconInnerShadowTop,
   IconMail,
@@ -14,9 +14,11 @@ import {
   IconUsers,
   IconChecklist,
   IconAddressBook,
-  IconFileText,
   IconBrain,
   IconClipboardList,
+  IconBuildingSkyscraper,
+  IconAB2,
+  IconFileAnalytics,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -32,90 +34,51 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
 } from "@/components/ui/sidebar"
 
-const data = {
-  user: {
-    name: "Utilisateur",
-    email: "user@outreachmachine.com",
-    avatar: "",
-  },
-  navMain: [
-    {
-      title: "Tableau de bord",
-      url: "/dashboard",
-      icon: IconDashboard,
-    },
-    {
-      title: "Leads",
-      url: "/dashboard/leads",
-      icon: IconAddressBook,
-    },
-    {
-      title: "Générer",
-      url: "/dashboard/generate",
-      icon: IconSparkles,
-    },
-    {
-      title: "Assistant IA",
-      url: "/dashboard/assistant",
-      icon: IconBrain,
-    },
-    {
-      title: "Planification",
-      url: "/dashboard/planification",
-      icon: IconClipboardList,
-    },
-    {
-      title: "Réviser",
-      url: "/dashboard/review",
-      icon: IconChecklist,
-    },
-    {
-      title: "Campagnes",
-      url: "/dashboard/campaigns",
-      icon: IconMail,
-    },
-    {
-      title: "Analytiques",
-      url: "/dashboard/analytics",
-      icon: IconChartBar,
-    },
-    {
-      title: "Équipe",
-      url: "/dashboard/team",
-      icon: IconUsers,
-    },
+const navGroups = {
+  main: [
+    { title: "Tableau de bord", url: "/dashboard", icon: IconDashboard },
+    { title: "Leads & Entreprises", url: "/dashboard/leads", icon: IconAddressBook },
+    { title: "Scoring ICP", url: "/dashboard/scoring", icon: IconBuildingSkyscraper },
   ],
-  navSecondary: [
-    {
-      title: "Paramètres",
-      url: "/dashboard/settings",
-      icon: IconSettings,
-    },
-    {
-      title: "Aide",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Rechercher",
-      url: "#",
-      icon: IconSearch,
-    },
+  outreach: [
+    { title: "Générer", url: "/dashboard/generate", icon: IconSparkles },
+    { title: "Assistant IA", url: "/dashboard/assistant", icon: IconBrain },
+    { title: "Planification", url: "/dashboard/planification", icon: IconClipboardList },
+    { title: "Réviser", url: "/dashboard/review", icon: IconChecklist },
+  ],
+  campaigns: [
+    { title: "Campagnes", url: "/dashboard/campaigns", icon: IconMail },
+    { title: "A/B Testing", url: "/dashboard/ab-testing", icon: IconAB2 },
+    { title: "Rapports", url: "/dashboard/reports", icon: IconFileAnalytics },
+    { title: "Analytiques", url: "/dashboard/analytics", icon: IconChartBar },
+  ],
+  team: [
+    { title: "Équipe", url: "/dashboard/team", icon: IconUsers },
   ],
 }
 
+const navSecondary = [
+  { title: "Paramètres", url: "/dashboard/settings", icon: IconSettings },
+  { title: "Aide", url: "/dashboard/settings", icon: IconHelp },
+  { title: "Rechercher", url: "/dashboard/settings", icon: IconSearch },
+]
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
   const [news, setNews] = React.useState<NewsArticle[]>([])
 
   React.useEffect(() => {
     getChangelogNews().then((items) => {
       const articles: NewsArticle[] = items.map(item => ({
-        href: "/dashboard/changelog", // Fallback or specific link
+        href: "/dashboard",
         title: `v${item.title}`,
         summary: item.description,
-        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=200&h=120", // Default AI/Tech image
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=200&h=120",
       }))
       setNews(articles)
     })
@@ -139,19 +102,50 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        {/* Main Group */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Principal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavMain items={navGroups.main} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Outreach Group */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Outreach</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavMain items={navGroups.outreach} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Campaigns Group */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Campagnes & Rapports</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavMain items={navGroups.campaigns} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Team */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Organisation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <NavMain items={navGroups.team} />
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         {news.length > 0 && (
-          <div className="mt-4 px-0">
+          <div className="mt-2 px-0">
              <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Nouveautés
             </div>
             <News articles={news} />
           </div>
         )}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={{ name: "Utilisateur", email: "user@outreachmachine.com", avatar: "" }} />
       </SidebarFooter>
     </Sidebar>
   )
