@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "build": "export NODE_OPTIONS='--max-old-space-size=4096' && export SENTRY_SKIP_SOURCE_MAP_UPLOAD=1 && next build",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
@@ -68,7 +70,6 @@
     "next-auth": "5.0.0-beta.30",
     "next-themes": "^0.4.6",
     "ollama-ai-provider": "^1.2.0",
-    "playwright": "^1.58.2",
     "radix-ui": "^1.4.3",
     "react": "^19",
     "react-day-picker": "9.8.0",
@@ -85,14 +86,17 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.17.3",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "postcss": "^8.5",
+    "playwright": "^1.58.2",
     "shadcn": "^4.1.0",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "latest"
   }
 }
