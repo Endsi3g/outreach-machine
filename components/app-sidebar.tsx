@@ -15,6 +15,8 @@ import {
   IconChecklist,
   IconAddressBook,
   IconFileText,
+  IconBrain,
+  IconClipboardList,
 } from "@tabler/icons-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -51,6 +53,11 @@ const data = {
       title: "Générer",
       url: "/dashboard/generate",
       icon: IconSparkles,
+    },
+    {
+      title: "Planning",
+      url: "/dashboard/planning",
+      icon: IconBrain,
     },
     {
       title: "Outline",

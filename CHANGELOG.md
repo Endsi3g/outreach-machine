@@ -4,6 +4,19 @@ Toutes les modifications notables apportées à ce projet seront documentées da
 
 Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/), et ce projet adhère à [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2026-03-22
+
+### Added
+- **UI Excellence Pack**: Premium components from 21st.dev (customized).
+- **Agent Planning**: New dashboard page and generation-time plan visualization.
+- **Text Shimmer**: Sleek loading effects for AI-generated content.
+- **AI Input with Status**: Enhanced prompt input with real-time feedback.
+- **Skeleton Loaders**: High-fidelity placeholders for all dashboard sections.
+- **Lazy Loading**: Dynamic imports for heavy chart components to optimize performance.
+
+### Fixed
+- **Resend Build Error**: Implemented lazy initialization for the Resend client, resolving "Missing API Key" errors during static build generation.
+
 ## [3.6.0] - 2026-03-22
 ### Remote Access & Build Optimization
 - **Docker Fix V3** : Final fix for Tailwind CSS 4 native bindings (`oxide`) in Docker by correctly configuring `pnpm` architecture and using `node:20-bookworm-slim`.

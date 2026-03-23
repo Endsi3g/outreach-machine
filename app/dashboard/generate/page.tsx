@@ -13,6 +13,10 @@ import {
   IconCopy,
   IconCheck,
 } from "@tabler/icons-react"
+import { TextShimmer } from "@/components/ui/text-shimmer"
+import { Skeleton } from "@/components/ui/skeleton"
+import { AIInputWithLoading } from "@/components/ui/ai-input-with-loading"
+import { AgentPlan } from "@/components/ui/agent-plan"
 
 export default function GeneratePage() {
   const [leadName, setLeadName] = React.useState("")
@@ -56,72 +60,60 @@ export default function GeneratePage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Input Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Informations du lead</CardTitle>
-            <CardDescription>
-              Renseignez les informations du destinataire pour générer un email personnalisé.
-            </CardDescription>
-          </CardHeader>
-          <div className="flex flex-col gap-4 px-6 pb-6">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="leadName">Nom du contact</Label>
-              <Input
-                id="leadName"
-                placeholder="Jean Dupont"
-                value={leadName}
-                onChange={(e) => setLeadName(e.target.value)}
+        <div className="flex flex-col gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Description de l&apos;email</CardTitle>
+              <CardDescription>
+                Utilisez l&apos;IA pour générer un email basé sur vos besoins.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AIInputWithLoading
+                value={leadName + " " + leadCompany + " " + leadPosition + " " + campaignSubject}
+                onChange={(val) => {
+                  // This is a simplified integration. For a real app, 
+                  // we might want a single prompt box instead of multiple inputs.
+                  setCampaignSubject(val)
+                }}
+                onGenerate={handleGenerate}
+                isLoading={isLoading}
+                placeholder="Ex: Écris un email pour Jean de Acme Corp qui est Directeur Marketing pour lui proposer une collaboration SaaS..."
               />
+            </CardContent>
+          </Card>
+
+          {isLoading && <AgentPlan />}
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations détaillées (Optionnel)</CardTitle>
+            </CardHeader>
+            <div className="flex flex-col gap-4 px-6 pb-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="leadName">Nom</Label>
+                  <Input
+                    id="leadName"
+                    value={leadName}
+                    onChange={(e) => setLeadName(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="leadCompany">Entreprise</Label>
+                  <Input
+                    id="leadCompany"
+                    value={leadCompany}
+                    onChange={(e) => setLeadCompany(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="leadCompany">Entreprise</Label>
-              <Input
-                id="leadCompany"
-                placeholder="Acme Corp"
-                value={leadCompany}
-                onChange={(e) => setLeadCompany(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="leadPosition">Poste</Label>
-              <Input
-                id="leadPosition"
-                placeholder="Directeur Marketing"
-                value={leadPosition}
-                onChange={(e) => setLeadPosition(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="campaignSubject">Sujet de la campagne</Label>
-              <Input
-                id="campaignSubject"
-                placeholder="Collaboration SaaS"
-                value={campaignSubject}
-                onChange={(e) => setCampaignSubject(e.target.value)}
-              />
-            </div>
-            <Button
-              onClick={handleGenerate}
-              disabled={isLoading}
-              className="mt-2 w-full"
-            >
-              {isLoading ? (
-                <>
-                  <IconLoader2 className="mr-2 size-4 animate-spin" />
-                  Génération en cours...
-                </>
-              ) : (
-                <>
-                  <IconSparkles className="mr-2 size-4" />
-                  Générer l&apos;email
-                </>
-              )}
-            </Button>
-          </div>
-        </Card>
+          </Card>
+        </div>
 
         {/* Preview */}
-        <Card>
+        <Card className="h-fit">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -151,10 +143,20 @@ export default function GeneratePage() {
                 {completion}
               </div>
             ) : (
-              <div className="flex min-h-[200px] items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-                {isLoading
-                  ? "Génération en cours..."
-                  : "Remplissez le formulaire et cliquez sur Générer"}
+              <div className="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground p-8">
+                {isLoading ? (
+                  <div className="w-full space-y-4">
+                    <TextShimmer className="text-lg font-medium text-primary">
+                      Génération par l'IA en cours...
+                    </TextShimmer>
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-[90%]" />
+                    <Skeleton className="h-4 w-[95%]" />
+                    <Skeleton className="h-4 w-[80%]" />
+                  </div>
+                ) : (
+                  "Remplissez le formulaire et cliquez sur Générer"
+                )}
               </div>
             )}
           </div>
