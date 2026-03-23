@@ -83,19 +83,9 @@ export function News({ articles }: { articles: NewsArticle[] }) {
             style={{ "--offset": "10px" } as React.CSSProperties}
           >
             <div className="animate-fade-in absolute inset-0 rounded-lg border border-neutral-300 [animation-delay:2.3s] [animation-direction:reverse] [animation-duration:0.2s]" />
-            <div className="flex flex-col items-center justify-center gap-1 opacity-40">
-               <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-8 text-primary"
-              >
-                <path d="M12 2L20 20H4L12 2Z" fill="currentColor" />
-              </svg>
-              <span className="text-[10px] font-bold">OUTREACH</span>
-            </div>
-            <span className="animate-fade-in text-[10px] font-medium text-muted-foreground [animation-delay:2.3s] [animation-direction:reverse] [animation-duration:0.2s]">
-              Vous êtes à jour !
+            <AnimatedLogo className="w-1/3" />
+            <span className="animate-fade-in text-xs font-medium text-muted-foreground [animation-delay:2.3s] [animation-direction:reverse] [animation-duration:0.2s]">
+              You're all caught up!
             </span>
           </div>
         )}
@@ -226,9 +216,9 @@ function NewsCard({
     <Card
       ref={ref}
       className={cn(
-        "relative select-none gap-2 p-3 text-[0.8125rem] bg-card",
+        "relative select-none gap-2 p-3 text-[0.8125rem]",
         "translate-x-[calc(var(--dx)*1px)] rotate-[calc(var(--dx)*0.05deg)] opacity-[calc(1-max(var(--dx),-1*var(--dx))/var(--w)/2)]",
-        "transition-shadow data-[dragging=true]:shadow-md border shadow-sm"
+        "transition-shadow data-[dragging=true]:shadow-md"
       )}
       data-dragging={dragging}
       onPointerDown={onPointerDown}
@@ -239,18 +229,18 @@ function NewsCard({
           <span className="line-clamp-1 font-medium text-foreground">
             {title}
           </span>
-          <p className="line-clamp-2 h-10 leading-5 text-muted-foreground italic">
+          <p className="line-clamp-2 h-10 leading-5 text-muted-foreground">
             {description}
           </p>
         </div>
-        <div className="relative mt-3 aspect-[16/9] w-full shrink-0 overflow-hidden rounded border bg-muted/30">
+        <div className="relative mt-3 aspect-[16/9] w-full shrink-0 overflow-hidden rounded border bg-muted">
           {image && (
             <Image
               src={image}
               alt=""
               fill
               sizes="10vw"
-              className="rounded object-cover object-center opacity-80"
+              className="rounded object-cover object-center"
               draggable={false}
             />
           )}
@@ -263,22 +253,77 @@ function NewsCard({
         >
           <div className="flex items-center justify-between pt-3 text-xs">
             <Link
-              href={href || "/CHANGELOG.md"}
+              href={href || "https://dub.co"}
               target="_blank"
-              className="font-medium text-primary hover:underline transition-colors duration-75"
+              className="font-medium text-muted-foreground hover:text-foreground transition-colors duration-75"
             >
-              En savoir plus
+              Read more
             </Link>
             <button
               type="button"
               onClick={dismiss}
               className="text-muted-foreground hover:text-foreground transition-colors duration-75"
             >
-              Fermer
+              Dismiss
             </button>
           </div>
         </div>
       </div>
     </Card>
+  );
+}
+
+function AnimatedLogo(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 48 21"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-muted-foreground"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12 1H15V12.9332C15.0001 12.9465 15.0002 12.9598 15.0003 12.9731C15.0003 12.982 15.0003 12.991 15.0003 13C15.0003 13.0223 15.0002 13.0445 15 13.0668V20H12V18.7455C10.8662 19.5362 9.48733 20 8.00016 20C4.13408 20 1 16.866 1 13C1 9.13401 4.13408 6 8.00016 6C9.48733 6 10.8662 6.46375 12 7.25452V1ZM8 16.9998C10.2091 16.9998 12 15.209 12 12.9999C12 10.7908 10.2091 9 8 9C5.79086 9 4 10.7908 4 12.9999C4 15.209 5.79086 16.9998 8 16.9998Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+      >
+        <animate
+          attributeName="stroke-dashoffset"
+          dur="2500ms"
+          values="63;0;0;0;63"
+          fill="freeze"
+        />
+      </path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M17 6H20V13V13C20 14.0608 20.4215 15.0782 21.1716 15.8283C21.9217 16.5784 22.9391 16.9998 24 16.9998C25.0609 16.9998 26.0783 16.5784 26.8284 15.8283C27.5785 15.0782 28 14.0608 28 13C28 13 28 13 28 13V6H31V13H31.0003C31.0003 13.9192 30.8192 14.8295 30.4675 15.6788C30.1157 16.5281 29.6 17.2997 28.95 17.9497C28.3 18.5997 27.5283 19.1154 26.679 19.4671C25.8297 19.8189 24.9194 20 24.0002 20C23.0809 20 22.1706 19.8189 21.3213 19.4671C20.472 19.1154 19.7003 18.5997 19.0503 17.9497C18.4003 17.2997 17.8846 16.5281 17.5329 15.6788C17.1811 14.8295 17 13.9192 17 13V13V6Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+      >
+        <animate
+          attributeName="stroke-dashoffset"
+          dur="2500ms"
+          values="69;0;0;0;69"
+          fill="freeze"
+        />
+      </path>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M33 1H36V7.25474C37.1339 6.46383 38.5128 6 40.0002 6C43.8662 6 47.0003 9.13401 47.0003 13C47.0003 16.866 43.8662 20 40.0002 20C36.1341 20 33 16.866 33 13V1ZM40 16.9998C42.2091 16.9998 44 15.209 44 12.9999C44 10.7908 42.2091 9 40 9C37.7909 9 36 10.7908 36 12.9999C36 15.209 37.7909 16.9998 40 16.9998Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+      >
+        <animate
+          attributeName="stroke-dashoffset"
+          dur="2500ms"
+          values="-60;0;0;0;-60"
+          fill="freeze"
+        />
+      </path>
+    </svg>
   );
 }
