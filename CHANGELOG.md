@@ -1,5 +1,17 @@
 # Changelog
  
+## [3.7.8] - 2026-03-22
+### Fixed
+- **Google OAuth**: Identified `redirect_uri_mismatch` due to port change (3001). Instructions provided for whitelist updates.
+- **Supabase Connectivity**: Confirmed manual integration of `anon` and `service_role` keys.
+- **Sentry Integration**: Corrected wizard execution path guidance.
+ 
+## [3.7.7] - 2026-03-22
+### Changed
+- **Supabase Connectivity**: Updated `NEXT_PUBLIC_SUPABASE_URL` with the real project reference (`amlwjeuprxkrgivystgn`) from the MCP configuration.
+### Added
+- **Sentry SDK Integration**: Initialized Sentry monitoring for AI and production stability.
+ 
 ## [3.7.5] - 2026-03-22
 ### Fixed
 - **Authentication Resilience**: Optimized Supabase queries using `maybeSingle()` to handle non-existent users gracefully during login and registration.

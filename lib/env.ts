@@ -7,7 +7,7 @@ import { z } from "zod"
  */
 const envSchema = z.object({
   // NextAuth
-  NEXTAUTH_URL: z.string().url().default("http://localhost:3000"),
+  NEXTAUTH_URL: z.string().url().default("http://localhost:3001"),
   NEXTAUTH_SECRET: z.string().min(1, "NEXTAUTH_SECRET is required"),
 
   // Google OAuth
