@@ -17,3 +17,7 @@ Voici la liste complète des fonctionnalités implémentées, des composants cr�
 ## 🎨 Interface Utilisateur (UI/UX)
 - **`components/page-transition.tsx`** : Refonte totale des transitions inter-pages ("View Transitions") en utilisant la librairie `framer-motion` (`AnimatePresence`) pour assurer des fondus croisés et une mise à l'échelle extrêmement fluides lors de la navigation dans le Dashboard.
 - **`components/data-table.tsx`** : Correction de l'expérience mobile sur le Dashboard. Les contraintes rigides `overflow-hidden` qui cassaient l'affichage des tableaux sur smartphones ont été remplacées par un englobant `overflow-x-auto` fluide et responif.
+
+## 📨 Marketing & Outreach
+- **`components/chart-area-interactive.tsx`** : Reporting Avancé. Transformation du graphique statique en un tableau de bord calculant dynamiquement le ROI Net par campagne en fonction de l'investissement (Coût) et des Revenus générés.
+- **`dev.ps1`** : Correction des anomalies d'encodage et guillemets empêchant l'exécution du script de lancement de dev de l'application.

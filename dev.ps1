@@ -52,7 +52,7 @@ if (-Not $env:OLLAMA_BASE_URL) {
 # 4. Lancement (Docker ou Local)
 $dockerChoice = Read-Host "🐳 Voulez-vous démarrer un conteneur Docker ultra-rapide ? (O/N)"
 if ($dockerChoice -match "^[OoYy]") {
-    Write-Host "🏗️ Construction de l'image Docker (standalone)..." -ForegroundColor Green
+    Write-Host "Construction de l image Docker (standalone)..." -ForegroundColor Green
     docker build -t outreach-machine:latest .
     Write-Host "🚀 Lancement du conteneur sur le port 3000..." -ForegroundColor Green
     docker run -p 3000:3000 --env-file .env.local outreach-machine:latest

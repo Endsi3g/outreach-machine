@@ -16,7 +16,6 @@ Suite au déploiement de la version **3.7.1 "London Stable"**, voici les axes d'
 
 ## 🎨 Interface Utilisateur (UI)
 
-- [ ] **Dark Mode Premium** : Finaliser la version sombre du thème "London" avec des accents cuivrés.
 - [x] **Transitions View Transitions API** : Utiliser les nouvelles API de navigation pour des passages entre pages encore plus fluides.
 - [x] **Mobile Experience** : Optimiser le Dashboard pour une utilisation fluide sur tablettes et smartphones.
 

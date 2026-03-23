@@ -127,16 +127,16 @@ const chartData = [
 ]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  campaigns: {
+    label: "Performances",
   },
-  desktop: {
-    label: "Desktop",
-    color: "var(--primary)",
+  revenue: {
+    label: "Revenus (€)",
+    color: "hsl(var(--chart-2))", // Vert / Positif
   },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
+  cost: {
+    label: "Coût (€)",
+    color: "hsl(var(--chart-5))", // Rouge / Dépense
   },
 } satisfies ChartConfig
 
@@ -164,15 +164,25 @@ export function ChartAreaInteractive() {
     return date >= startDate
   })
 
+  const mappedData = filteredData.map(item => ({
+    date: item.date,
+    revenue: Math.round(item.desktop * 14.5), // Simulate revenue
+    cost: Math.round(item.mobile * 4.2)      // Simulate cost
+  }))
+
+  const totalRevenue = mappedData.reduce((acc, curr) => acc + curr.revenue, 0)
+  const totalCost = mappedData.reduce((acc, curr) => acc + curr.cost, 0)
+  const netROI = totalCost > 0 ? (((totalRevenue - totalCost) / totalCost) * 100).toFixed(1) : "0"
+
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Total Visitors</CardTitle>
+        <CardTitle>ROI des Campagnes</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last 3 months
+            Revenus: +{totalRevenue.toLocaleString()} € | Coût: {totalCost.toLocaleString()} € (ROI Net: {netROI}%)
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">ROI: {netROI}%</span>
         </CardDescription>
         <CardAction>
           <ToggleGroup
@@ -213,29 +223,29 @@ export function ChartAreaInteractive() {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <AreaChart data={filteredData}>
+          <AreaChart data={mappedData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-desktop)"
+                  stopColor="var(--color-revenue)"
                   stopOpacity={1.0}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-desktop)"
+                  stopColor="var(--color-revenue)"
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillCost" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-mobile)"
+                  stopColor="var(--color-cost)"
                   stopOpacity={0.8}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-mobile)"
+                  stopColor="var(--color-cost)"
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -247,9 +257,9 @@ export function ChartAreaInteractive() {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
+              tickFormatter={(value: string) => {
                 const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
+                return date.toLocaleDateString("fr-FR", {
                   month: "short",
                   day: "numeric",
                 })
@@ -259,8 +269,8 @@ export function ChartAreaInteractive() {
               cursor={false}
               content={
                 <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                  labelFormatter={(value: string) => {
+                    return new Date(value).toLocaleDateString("fr-FR", {
                       month: "short",
                       day: "numeric",
                     })
@@ -270,17 +280,17 @@ export function ChartAreaInteractive() {
               }
             />
             <Area
-              dataKey="mobile"
+              dataKey="cost"
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
+              fill="url(#fillCost)"
+              stroke="var(--color-cost)"
               stackId="a"
             />
             <Area
-              dataKey="desktop"
+              dataKey="revenue"
               type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
+              fill="url(#fillRevenue)"
+              stroke="var(--color-revenue)"
               stackId="a"
             />
           </AreaChart>
