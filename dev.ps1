@@ -12,8 +12,13 @@ if (-Not (Test-Path ".env.local")) {
 }
 
 # 2. Installation automatique des dependances
-Write-Host "Installation des dependances avec pnpm..." -ForegroundColor Green
-pnpm install
+Write-Host "Installation des dependances..." -ForegroundColor Green
+if (Get-Command pnpm -ErrorAction SilentlyContinue) {
+    pnpm install
+} else {
+    Write-Host "pnpm non detecte, utilisation de npm..." -ForegroundColor Yellow
+    npm install
+}
 
 # 3. Configuration de Kimi K2-5 & Ollama Cloud
 Write-Host "Configuration de l'IA Kimi K2-5" -ForegroundColor Cyan
@@ -55,5 +60,9 @@ if ($dockerChoice -match "^[OoYy]") {
     docker run -p 3000:3000 --env-file .env.local outreach-machine:latest
 } else {
     Write-Host "Lancement de Next.js en mode developpement sur http://localhost:3000..." -ForegroundColor Green
-    pnpm dev
+    if (Get-Command pnpm -ErrorAction SilentlyContinue) {
+        pnpm dev
+    } else {
+        npm run dev
+    }
 }
