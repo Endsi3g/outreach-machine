@@ -1,7 +1,7 @@
 "use client";
 
 import { News, type NewsArticle } from "@/components/ui/sidebar-news";
-import Plan from "@/components/ui/agent-plan";
+import { AgentPlan as Plan } from "@/components/ui/agent-plan";
 
 const DEMO_ARTICLES: NewsArticle[] = [
   {
