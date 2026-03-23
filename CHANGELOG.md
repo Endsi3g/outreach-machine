@@ -1,5 +1,11 @@
 # Changelog
  
+## [3.7.2] - 2026-03-22
+### Added
+- **Sidebar News System**: Dynamic notification system integrated directly into the sidebar, pulling live updates from `CHANGELOG.md`.
+- **Infrastructure**: New `lib/changelog-parser.ts` and Server Action `getChangelogNews` for zero-mock data fetching.
+- **UI Components**: Implementation of `SidebarNews` (from 21st.dev) and `useMediaQuery` hook.
+ 
 ## [3.7.1] - 2026-03-22
 ### Fixed
 - **Dependency Issues**: Resolved missing `framer-motion` requirement for `TextShimmer` and other UI components.
