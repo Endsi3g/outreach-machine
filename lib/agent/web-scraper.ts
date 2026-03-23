@@ -6,6 +6,7 @@
 interface ProspectData {
   companyName: string
   description: string
+  slogan: string | null
   services: string[]
   contactEmail: string | null
   phone: string | null
@@ -43,6 +44,7 @@ export async function researchProspect(url: string): Promise<ProspectData> {
     return {
       companyName: extractDomain(url),
       description: `Impossible de récupérer les données: ${error.message}`,
+      slogan: null,
       services: [],
       contactEmail: null,
       phone: null,
@@ -56,14 +58,26 @@ export async function researchProspect(url: string): Promise<ProspectData> {
 
 function parseProspectHTML(html: string, url: string): ProspectData {
   // Extract title
-  const titleMatch = html.match(/<title[^>]*>(.*?)<\/title>/is)
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
   const companyName = titleMatch 
     ? titleMatch[1].replace(/\s*[-|–—]\s*.*/g, "").trim()
     : extractDomain(url)
 
   // Extract meta description
-  const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["'](.*?)["']/is)
-  const description = descMatch ? descMatch[1].trim() : ""
+  const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["'](.*?)["']/i) || 
+                    html.match(/<meta[^>]*content=["']([^"']*)["'][^>]*name=["']description["']/i) ||
+                    html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["'](.*?)["']/i);
+  const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, '').trim() : "Aucune description trouvée";
+
+  // Extract slogan (typically from the first or prominent H1 tag)
+  const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  let slogan = null;
+  if (h1Match) {
+    const rawSlogan = h1Match[1].replace(/<[^>]+>/g, '').trim();
+    if (rawSlogan.length > 5 && rawSlogan.length < 100) {
+      slogan = rawSlogan;
+    }
+  }
 
   // Extract emails
   const emailMatches = html.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g)
@@ -114,14 +128,22 @@ function parseProspectHTML(html: string, url: string): ProspectData {
     "restaurant": "Restauration",
     "immobilier": "Immobilier",
     "construction": "Construction",
-    "santé": "Santé",
+    "santé": "Santé / Médical",
+    "clinique": "Santé / Médical",
     "avocat": "Juridique",
-    "dentiste": "Dentaire",
-    "fitness": "Fitness",
-    "beauté": "Beauté",
-    "mode": "Mode",
-    "technologie": "Technologie",
+    "dentiste": "Soin dentaire",
+    "fitness": "Fitness & Sport",
+    "beauté": "Beauté & Bien-être",
+    "mode": "Mode / Vêtements",
+    "technologie": "Technologie (IT)",
     "finance": "Finance",
+    "marketing": "Marketing & Publicité",
+    "agence": "Agence Web / Création",
+    "saas": "Logiciel (SaaS)",
+    "software": "Logiciel (SaaS)",
+    "e-commerce": "E-Commerce",
+    "logistique": "Transport & Logistique",
+    "automobile": "Automobile"
   }
   let industry = "Non déterminé"
   for (const [keyword, label] of Object.entries(industryKeywords)) {
@@ -138,6 +160,7 @@ function parseProspectHTML(html: string, url: string): ProspectData {
   return {
     companyName,
     description,
+    slogan,
     services,
     contactEmail,
     phone,

@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.0.0] - 2026-03-23
+### Added
+- **Generate Page Connection**: Added a prospect selection dropdown to fetch directly from the CRM (`/api/leads`).
+- **Enhanced Web Scraper**: The ICP scoring agent now detects slogans via `<h1>` tags, parses meta descriptions more accurately without whitespace HTML, and detects a wider range of industries.
+- **Dashboard Translations**: Full French translation of the main UI layout (Aperçu, Performances passées, etc.).
+- **User Profile**: Translated profile menu to French and removed the non-functional Billing item.
+
+### Fixed
+- **System Timeouts**: Disabled the Sentry `/monitoring` tunnel rewrite layer which was causing `ECONNRESET` server side failures, leading to 10-second timeouts across all application pages.
+- **Leads & Teams Loading**: Fixed infinite `team_members` recursion error in Supabase RLS policies via `migration_v3_fix_recursion.sql`, allowing CRM leads to infinitely load and be created correctly.
+- **Regex TypeScript Lints**: Fixed regular expression syntax compatibility for ES2018 in `web-scraper.ts`.
+
 ## [5.0.0] - 2026-03-23
 ### Added
 - **ICP Scoring**: Company analysis page with web agent research, ICP score calculation (0-100), decision maker extraction, tech stack detection.

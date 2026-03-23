@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useCompletion } from "@ai-sdk/react"
 import {
   IconSparkles,
@@ -24,6 +25,32 @@ export default function GeneratePage() {
   const [leadPosition, setLeadPosition] = React.useState("")
   const [campaignSubject, setCampaignSubject] = React.useState("")
   const [copied, setCopied] = React.useState(false)
+
+  const [leads, setLeads] = React.useState<any[]>([])
+  const [selectedLeadId, setSelectedLeadId] = React.useState<string>("manual")
+
+  React.useEffect(() => {
+    fetch("/api/leads")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.leads) {
+          setLeads(data.leads)
+        }
+      })
+      .catch(console.error)
+  }, [])
+
+  const handleLeadSelect = (id: string) => {
+    setSelectedLeadId(id)
+    if (id !== "manual") {
+      const lead = leads.find((l) => l.id === id)
+      if (lead) {
+        setLeadName(lead.name || "")
+        setLeadCompany(lead.company || "")
+        setLeadPosition(lead.position || "")
+      }
+    }
+  }
 
   const { completion, isLoading, complete, error } = useCompletion({
     api: "/api/chat/generate",
@@ -90,13 +117,34 @@ export default function GeneratePage() {
               <CardTitle>Informations détaillées (Optionnel)</CardTitle>
             </CardHeader>
             <div className="flex flex-col gap-4 px-6 pb-6">
+              <div className="flex flex-col gap-4 pb-4">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="prospectSelect">Sélectionner un prospect</Label>
+                  <Select value={selectedLeadId} onValueChange={handleLeadSelect}>
+                    <SelectTrigger id="prospectSelect">
+                      <SelectValue placeholder="Choisir un prospect existant ou saisie manuelle" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="manual">-- Saisie manuelle --</SelectItem>
+                      {leads.map((lead) => (
+                        <SelectItem key={lead.id} value={lead.id}>
+                          {lead.name} ({lead.company})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="leadName">Nom</Label>
                   <Input
                     id="leadName"
                     value={leadName}
-                    onChange={(e) => setLeadName(e.target.value)}
+                    onChange={(e) => {
+                      setLeadName(e.target.value)
+                      if (selectedLeadId !== "manual") setSelectedLeadId("manual")
+                    }}
                   />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -104,7 +152,10 @@ export default function GeneratePage() {
                   <Input
                     id="leadCompany"
                     value={leadCompany}
-                    onChange={(e) => setLeadCompany(e.target.value)}
+                    onChange={(e) => {
+                      setLeadCompany(e.target.value)
+                      if (selectedLeadId !== "manual") setSelectedLeadId("manual")
+                    }}
                   />
                 </div>
               </div>
