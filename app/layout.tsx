@@ -24,7 +24,11 @@ export const metadata: Metadata = {
   title: "Outreach Machine - Automatisation d'emails a froid intelligente",
   description:
     "Importez vos leads, generez des emails ultra-personnalises avec l'IA Claude, validez et envoyez via Brevo. Construit pour Uprising Studio.",
-    generator: 'v0.app'
+  generator: "v0.app",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.png",
+  },
 }
 
 export default function RootLayout({
@@ -33,7 +37,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
+    <html
+      lang="fr"
+      className={`${inter.variable} ${instrumentSerif.variable} antialiased`}
+      data-scroll-behavior="smooth"
+    >
       <head />
       <body className="font-sans antialiased">
         <SmoothScroll />

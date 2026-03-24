@@ -11,7 +11,6 @@
 - **`update.ps1`** : Correction critique de l'encodage (retrait des accents et emojis) pour assurer une compatibilité parfaite avec PowerShell 5.1 sur Windows.
 - **`scripts/ngrok_install.ps1`** & **`scripts/cloudflare_install.ps1`** : Adaptations de compatibilité similaires.
 
-
 ## 🎨 Interface Utilisateur (UI/UX)
 
 - **`components/lead-research-tool.tsx`** *(Nouveau)* : Outil interactif intégré au Dashboard permettant de lancer des analyses de prospects en un clic.
