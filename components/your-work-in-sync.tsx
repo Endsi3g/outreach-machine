@@ -45,11 +45,11 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
           <div className="absolute left-0 top-0 flex gap-[10px] items-start w-[356px] h-[36px]">
             {/* Avatar */}
             <div
-              className="w-9 h-9 rounded-full bg-cover bg-center border shrink-0"
-              style={{
-                backgroundImage: `url('${imgAvatar1}')`,
-                borderColor: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
-              }}
+              className={cn(
+                "w-9 h-9 rounded-full bg-cover bg-center border shrink-0",
+                isLight ? "border-[rgba(0,0,0,0.08)]" : "border-[rgba(255,255,255,0.12)]"
+              )}
+              style={{ backgroundImage: `url('${imgAvatar1}')` }}
             />
             {/* Message bubble */}
             <div
@@ -84,11 +84,11 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
             </div>
             {/* Avatar */}
             <div
-              className="w-9 h-9 rounded-full bg-cover bg-center border shrink-0"
-              style={{
-                backgroundImage: `url('${imgAvatar2}')`,
-                borderColor: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
-              }}
+              className={cn(
+                "w-9 h-9 rounded-full bg-cover bg-center border shrink-0",
+                isLight ? "border-[rgba(0,0,0,0.08)]" : "border-[rgba(255,255,255,0.12)]"
+              )}
+              style={{ backgroundImage: `url('${imgAvatar2}')` }}
             />
           </div>
 
@@ -96,11 +96,11 @@ const YourWorkInSync: React.FC<YourWorkInSyncProps> = ({
           <div className="absolute left-0 top-[120px] flex gap-[10px] items-start w-[210px] h-[36px]">
             {/* Avatar */}
             <div
-              className="w-9 h-9 rounded-full bg-cover bg-center border shrink-0"
-              style={{
-                backgroundImage: `url('${imgAvatar3}')`,
-                borderColor: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
-              }}
+              className={cn(
+                "w-9 h-9 rounded-full bg-cover bg-center border shrink-0",
+                isLight ? "border-[rgba(0,0,0,0.08)]" : "border-[rgba(255,255,255,0.12)]"
+              )}
+              style={{ backgroundImage: `url('${imgAvatar3}')` }}
             />
             {/* Message bubble */}
             <div
