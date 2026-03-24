@@ -3,7 +3,8 @@
   "version": "6.0.0",
   "private": true,
   "scripts": {
-    "build": "cross-env NODE_OPTIONS='--max-old-space-size=4096' SENTRY_SKIP_SOURCE_MAP_UPLOAD=1 next build && opennextjs-cloudflare build",
+    "build-next": "cross-env NODE_OPTIONS='--max-old-space-size=4096' SENTRY_SKIP_SOURCE_MAP_UPLOAD=1 next build",
+    "build": "opennextjs-cloudflare build",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "dev": "next dev",
