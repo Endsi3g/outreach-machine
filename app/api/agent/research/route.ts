@@ -1,35 +1,30 @@
-import { NextRequest, NextResponse } from "next/server"
-import { researchProspect, researchMultipleProspects } from "@/lib/agent/web-scraper"
+import { NextResponse } from "next/server"
+import { runLeadResearchAgent } from "@/lib/agent/lead-researcher"
 import { auth } from "@/auth"
 
-export async function POST(request: NextRequest) {
+/**
+ * POST /api/agent/research
+ * Launch a lead research task
+ */
+export async function POST(req: Request) {
   try {
     const session = await auth()
-    if (!session?.user) {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 })
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await request.json()
-    const { url, urls } = body
-
-    // Batch research
-    if (urls && Array.isArray(urls)) {
-      const results = await researchMultipleProspects(urls.slice(0, 10))
-      return NextResponse.json({ results })
+    const { target } = await req.json()
+    if (!target) {
+      return NextResponse.json({ error: "Missing target (email or domain)" }, { status: 400 })
     }
 
-    // Single research
-    if (!url) {
-      return NextResponse.json({ error: "URL requis" }, { status: 400 })
-    }
+    // Run agent in background or await if you want immediate results
+    // For now we await to show the result in the UI
+    const result = await runLeadResearchAgent(target, session.user?.email || undefined)
 
-    const data = await researchProspect(url)
-    return NextResponse.json({ data })
+    return NextResponse.json(result)
   } catch (error: any) {
-    console.error("Agent research error:", error)
-    return NextResponse.json(
-      { error: error.message || "Erreur de recherche" },
-      { status: 500 }
-    )
+    console.error("Agent Research API Error:", error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

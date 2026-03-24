@@ -11,7 +11,7 @@ Suite au déploiement de la version **3.7.1 "London Stable"**, voici les axes d'
 ## 🤖 Intelligence Artificielle (IA)
 
 - [x] **Multi-Model Support** : Permettre le switch dynamique entre Kimu 2.5, DeepSeek, et Llama 3 directement depuis l'interface.
-- [x] **Agentic Research** : Améliorer les capacités de navigation de l'agent pour extraire des informations plus profondes sur les technologies utilisées par les prospects.
+- [x] **Agentic Research** : Intégration de Exa.ai et AgentMail pour une prospection et gestion d'email 100% automatisée.
 - [x] **Streaming Progress** : Afficher plus de détails sur les étapes de réflexion de l'IA pendant la génération (Thinking process visible).
 
 ## 🎨 Interface Utilisateur (UI)

@@ -1,11 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { IconSend, IconBrain, IconRefresh, IconLoader2 } from "@tabler/icons-react"
+import { IconSend, IconMail, IconRefresh, IconLoader2, IconBriefcase, IconInbox, IconArrowBackUp } from "@tabler/icons-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { toast } from "sonner"
 
 interface ChatMessage {
   role: "user" | "assistant"
   content: string
+  toolResults?: any[]
 }
 
 export default function AssistantPage() {
@@ -22,12 +28,12 @@ export default function AssistantPage() {
     scrollToBottom()
   }, [messages])
 
-  const sendMessage = async () => {
-    if (!input.trim() || loading) return
+  const sendMessage = async (overrideMessage?: string) => {
+    const messageToSend = overrideMessage || input.trim()
+    if (!messageToSend || loading) return
 
-    const userMessage = input.trim()
+    setMessages(prev => [...prev, { role: "user", content: messageToSend }])
     setInput("")
-    setMessages(prev => [...prev, { role: "user", content: userMessage }])
     setLoading(true)
 
     try {
@@ -36,128 +42,188 @@ export default function AssistantPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           history: messages.map(m => ({ role: m.role, content: m.content })),
-          message: userMessage,
+          message: messageToSend,
         }),
       })
 
       const data = await res.json()
       if (data.response) {
-        setMessages(prev => [...prev, { role: "assistant", content: data.response }])
+        setMessages(prev => [...prev, { 
+          role: "assistant", 
+          content: data.response,
+          toolResults: data.toolResults 
+        }])
       } else {
-        setMessages(prev => [...prev, { role: "assistant", content: `Erreur: ${data.error || "Réponse vide"}` }])
+        toast.error(data.error || "Réponse vide de l'IA")
       }
     } catch (error: any) {
-      setMessages(prev => [...prev, { role: "assistant", content: `Erreur de connexion: ${error.message}` }])
+      toast.error("Erreur de connexion: " + error.message)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
-    }
-  }
-
   return (
-    <div className="flex flex-col h-[calc(100vh-var(--header-height)-2rem)] px-4 lg:px-6 py-4 animate-page-enter">
+    <div className="flex flex-col h-[calc(100vh-var(--header-height)-2rem)] px-4 lg:px-6 py-4">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <IconBrain className="size-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-lg">
+            <IconMail className="size-5" />
           </div>
           <div>
-            <h1 className="text-xl font-semibold">Assistant IA</h1>
-            <p className="text-sm text-muted-foreground">Kimi K-2.5 via Ollama — Stratégie d&apos;outreach & rédaction</p>
+            <h1 className="text-xl font-bold tracking-tight">Email Copilot</h1>
+            <p className="text-xs text-muted-foreground flex items-center gap-1.5 font-medium">
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+              Connecté à AgentMail.to
+            </p>
           </div>
         </div>
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setMessages([])}
-          className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+          className="text-muted-foreground"
         >
-          <IconRefresh className="size-4" />
-          Nouvelle conversation
-        </button>
+          <IconRefresh className="size-4 mr-2" />
+          Réinitialiser
+        </Button>
       </div>
 
-      {/* Chat area */}
-      <div className="flex-1 overflow-y-auto rounded-xl border bg-card p-4 space-y-4">
-        {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full gap-4 text-muted-foreground">
-            <IconBrain className="size-12 opacity-30" />
-            <div className="text-center">
-              <p className="font-medium">Bienvenue dans l&apos;Assistant IA</p>
-              <p className="text-sm">Posez vos questions sur la stratégie d&apos;outreach, demandez de rédiger des emails, ou discutez de vos campagnes.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-w-lg">
-              {[
-                "Rédige un email pour un restaurant à Montréal",
-                "Quelle stratégie pour une campagne B2B?",
-                "Aide-moi à améliorer mon taux de réponse",
-                "Crée une séquence de 3 emails de follow-up",
-              ].map((suggestion, i) => (
-                <button
-                  key={i}
-                  onClick={() => setInput(suggestion)}
-                  className="rounded-lg border px-3 py-2 text-left text-xs hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[80%] rounded-xl px-4 py-3 text-sm whitespace-pre-wrap ${
-                msg.role === "user"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-secondary-foreground"
-              }`}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-4 overflow-hidden">
+        {/* Sidebar / Quick Actions */}
+        <Card className="hidden lg:flex flex-col col-span-1 border-none bg-zinc-50/50 dark:bg-white/5">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-semibold">Actions Rapides</CardTitle>
+            <CardDescription className="text-[10px]">Workflows automatisés</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2 px-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full justify-start text-xs h-9 bg-white dark:bg-zinc-900 border-zinc-200"
+              onClick={() => sendMessage("Consulte ma boîte de réception AgentMail")}
             >
-              {msg.content}
+              <IconInbox className="size-3.5 mr-2 text-blue-500" />
+              Consulter Inbox
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full justify-start text-xs h-9 bg-white dark:bg-zinc-900 border-zinc-200"
+              onClick={() => setInput("Envoie un email de présentation à [Email] concernant [Sujet]")}
+            >
+              <IconBriefcase className="size-3.5 mr-2 text-indigo-500" />
+              Intro Prospect
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full justify-start text-xs h-9 bg-white dark:bg-zinc-900 border-zinc-200"
+              onClick={() => sendMessage("Réponds au dernier message reçu avec un merci")}
+            >
+              <IconArrowBackUp className="size-3.5 mr-2 text-orange-500" />
+              Réponse Rapide
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Chat Area */}
+        <div className="flex flex-col col-span-1 lg:col-span-3 h-full rounded-2xl border bg-white dark:bg-zinc-950 shadow-sm overflow-hidden">
+          <ScrollArea className="flex-1 p-4">
+            <div className="space-y-4 pb-4">
+              {messages.length === 0 && (
+                <div className="flex flex-col items-center justify-center h-64 text-center space-y-4">
+                  <div className="h-16 w-16 bg-zinc-100 dark:bg-zinc-900 rounded-full flex items-center justify-center">
+                    <IconMail className="size-8 text-zinc-400" />
+                  </div>
+                  <div className="max-w-xs space-y-1">
+                    <p className="font-semibold text-lg italic">"Comment puis-je t'aider aujourd'hui ?"</p>
+                    <p className="text-xs text-muted-foreground">Je peux gérer tes courriels, résumer ta boîte de réception ou préparer des introductions.</p>
+                  </div>
+                </div>
+              )}
+
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-indigo-600 text-white shadow-md rounded-tr-none"
+                        : "bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-tl-none border dark:border-zinc-800"
+                    }`}
+                  >
+                    {msg.content}
+                    
+                    {msg.toolResults && msg.toolResults.length > 0 && (
+                      <div className="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 space-y-1">
+                        {msg.toolResults.map((tool, j) => (
+                          <div key={j} className="flex items-center gap-1.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                             <CheckCircle2 className="size-3" />
+                             Action effectuée: {tool.toolName}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="bg-zinc-100 dark:bg-zinc-900 rounded-2xl px-4 py-3 text-sm flex items-center gap-3 border dark:border-zinc-800">
+                    <IconLoader2 className="size-4 animate-spin text-indigo-500" />
+                    <span className="text-zinc-500 animate-pulse">Email Agent réfléchit...</span>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          </ScrollArea>
+
+          {/* Footer Input */}
+          <div className="p-4 border-t bg-zinc-50/50 dark:bg-black/20 backdrop-blur-sm">
+            <div className="flex items-center gap-2 max-w-4xl mx-auto">
+              <Input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                placeholder="Ex prime: 'Envoie un email à Marc pour confirmer notre meeting...'"
+                className="bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 h-11 rounded-xl"
+              />
+              <Button 
+                onClick={() => sendMessage()} 
+                disabled={!input.trim() || loading}
+                className="h-11 w-11 rounded-xl bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200 dark:shadow-none"
+              >
+                <IconSend className="size-4" />
+              </Button>
             </div>
           </div>
-        ))}
-
-        {loading && (
-          <div className="flex justify-start">
-            <div className="bg-secondary text-secondary-foreground rounded-xl px-4 py-3 text-sm flex items-center gap-2">
-              <IconLoader2 className="size-4 animate-spin" />
-              L&apos;IA réfléchit...
-            </div>
-          </div>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input area */}
-      <div className="mt-3 flex items-end gap-2">
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Écrivez votre message…"
-          rows={1}
-          className="flex-1 resize-none rounded-xl border bg-card px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-          style={{ minHeight: "44px", maxHeight: "120px" }}
-        />
-        <button
-          onClick={sendMessage}
-          disabled={!input.trim() || loading}
-          className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          <IconSend className="size-4" />
-        </button>
+        </div>
       </div>
     </div>
+  )
+}
+
+function CheckCircle2({ className }: { className?: string }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={className}
+    >
+      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/>
+    </svg>
   )
 }
