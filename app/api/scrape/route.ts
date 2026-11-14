@@ -22,15 +22,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Use the Google Search Results Scraper (free actor)
-    const actorId = type === "linkedin"
-      ? "anchor/linkedin-profile-scraper"
-      : "apify/google-search-scraper"
-
-    const run = await apifyClient.actor(actorId).call({
-      queries: url,
-      maxResults: 10,
-    })
+    // LinkedIn profiles go to a profile actor; everything else uses the Google Search Results Scraper
+    const run = type === "linkedin"
+      ? await apifyClient.actor("johnvc/linkedin-profile-api").call({
+          profileUrls: [url],
+        })
+      : await apifyClient.actor("apify/google-search-scraper").call({
+          queries: url,
+          maxResults: 10,
+        })
 
     const { items } = await apifyClient.dataset(run.defaultDatasetId).listItems()
 
